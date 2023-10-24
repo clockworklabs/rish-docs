@@ -1,0 +1,25 @@
+<head>
+    <title>{% if page.title %}{{page.title}} | {% endif %}{{site.title}}</title>
+
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="{% if page.description %}{{ page.description }}{% else %}{% if page.excerpt %}{{ page.excerpt | strip_html | strip | strip_newlines }}{% else %}{{site.description}}{% endif %}{% endif %}">
+    <meta name="author" content="{{ site.owner }}">
+    <link rel="shortcut icon" href="{{" /favicon.ico" | relative_url }}">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome JS-->
+    <script src="https://kit.fontawesome.com/13339e65f0.js" crossorigin="anonymous"></script>
+
+    <!-- Plugins CSS -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.2/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="{{ " /assets/plugins/simplelightbox/simple-lightbox.min.css" | relative_url }}">
+
+    <!-- Theme CSS -->
+    <link id="theme-style" rel="stylesheet" href="{{ " /assets/css/style.css" | relative_url }}">
+</head>
