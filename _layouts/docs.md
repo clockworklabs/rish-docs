@@ -35,8 +35,7 @@ layout: default
 				{% assign pages = site.pages | sort: "order" %}
 			  	{% for docs in pages %}
 					{% if docs.url contains target_url %}
-						{% capture docs_url %}{{ docs.url | relative_url }}{% endcapture %}
-						<li class="nav-item section-title{% if docs.url == page.url %} active{% endif %} {% if i > 0 %} mt-3{% endif %}"><a class="nav-link" href="{{ docs_url }}"><span class="theme-icon-holder me-2"><i class="fas fa-map-signs"></i></span>{{ docs.title }}</a></li>
+						<li class="nav-item section-title{% if docs.url == page.url %} active{% endif %} {% if i > 0 %} mt-3{% endif %}"><a class="nav-link" href="{{ docs.url }}"><span class="theme-icon-holder me-2"><i class="fas fa-map-signs"></i></span>{{ docs.title }}</a></li>
 						{% if docs.url == page.url %}
 							{% for docs-section in docs.sections %}
 								<li class="nav-item"><a class="nav-link scrollto" href="#{{ docs-section | slugify }}">{{ docs-section }}</a></li>
@@ -54,16 +53,16 @@ layout: default
 			<ul class="dropdown-menu">
 				{% if library == "rish" %}
 					{% for v in site.rish-versions %}
-						<li><a class="dropdown-item" href="{{ page.url | replace: version, v | relative_url }}">{{ v }}</a></li>
+						<li><a class="dropdown-item" href="{{ page.url | replace: version, v }}">{{ v }}</a></li>
 					{% endfor %}
 				{% else %}
 					{% for v in site.roots-versions %}
-						<li><a class="dropdown-item" href="{{ page.url | replace: version, v | relative_url }}">{{ v }}</a></li>
+						<li><a class="dropdown-item" href="{{ page.url | replace: version, v }}">{{ v }}</a></li>
 					{% endfor %}
 				{% endif %}
 			</ul>
 		</div>
-		<a href="{{ other_target_url | append: "/quick-start" | relative_url }}" class="btn btn-light btn-sm m-3">{{ other_library | capitalize }} Docs</a>
+		<a href="{{ other_target_url | append: "/quick-start" }}" class="btn btn-light btn-sm m-3">{{ other_library | capitalize }} Docs</a>
 	</div><!--//docs-sidebar-->
 	<div class="docs-content">
 		<div class="container">
@@ -81,15 +80,15 @@ layout: default
 
 	
 <!-- Javascript -->          
-<script src="{{ "/assets/plugins/popper.min.js" | relative_url }}"></script>
-<script src="{{ "/assets/plugins/bootstrap/js/bootstrap.min.js" | relative_url }}"></script>  
+<script src="/assets/plugins/popper.min.js"></script>
+<script src="/assets/plugins/bootstrap/js/bootstrap.min.js"></script>  
 
 
 <!-- Page Specific JS -->
-<script src="{{ "/assets/plugins/smoothscroll.min.js" | relative_url }}"></script>
+<script src="/assets/plugins/smoothscroll.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.8/highlight.min.js"></script>
-<script src="{{ "/assets/js/highlight-custom.js" | relative_url }}"></script> 
-<script src="{{ "/assets/plugins/simplelightbox/simple-lightbox.min.js" | relative_url }}"></script>      
-<script src="{{ "/assets/plugins/gumshoe/gumshoe.polyfills.min.js" | relative_url }}"></script> 
-<script src="{{ "/assets/js/docs.js" | relative_url }}"></script>
+<script src="/assets/js/highlight-custom.js"></script>
+<script src="/assets/plugins/simplelightbox/simple-lightbox.min.js"></script>
+<script src="/assets/plugins/gumshoe/gumshoe.polyfills.min.js"></script>
+<script src="/assets/js/docs.js"></script>
 

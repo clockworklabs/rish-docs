@@ -7,7 +7,7 @@ layout: default
         <h1 class="page-heading single-col-max mx-auto">R<span id="feature-text" class="text-alt"></span>ish</h1>
         <div class="page-intro single-col-max mx-auto">Declarative, element-based UI library for Unity.</div>
         <div class="single-col-max mx-auto mt-5">
-            <a href="{{ " /docs/rish/" | append: site.rish-versions[0] | append: "/quick-start" | relative_url }}" class="btn btn-light btn-sm">Learn Rish</a>
+            <a href="{{ "/docs/rish/" | append: site.rish-versions[0] | append: "/quick-start" }}" class="btn btn-light btn-sm">Learn Rish</a>
         </div>
     </div>
 </div><!--//page-header-->
@@ -46,16 +46,16 @@ layout: default
 {% include footer.html %}
 
 <!-- Javascript -->
-<script src="{{ "/assets/plugins/popper.min.js" | relative_url }}"></script>
-<script src="{{ "/assets/plugins/bootstrap/js/bootstrap.min.js" | relative_url }}"></script>
+<script src="/assets/plugins/popper.min.js"></script>
+<script src="/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
 
 <!-- Page Specific JS -->
-<script src="{{ "/assets/plugins/smoothscroll.min.js" | relative_url }}"></script>
+<script src="/assets/plugins/smoothscroll.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.8/highlight.min.js"></script>
-<script src="{{ "/assets/js/highlight-custom.js" | relative_url }}"></script>
-<script src="{{ "/assets/plugins/simplelightbox/simple-lightbox.min.js" | relative_url }}"></script>
-<script src="{{ "/assets/plugins/gumshoe/gumshoe.polyfills.min.js" | relative_url }}"></script>
-<script src="{{ "/assets/js/docs.js" | relative_url }}"></script>
+<script src="/assets/js/highlight-custom.js"></script>
+<script src="/assets/plugins/simplelightbox/simple-lightbox.min.js"></script>
+<script src="/assets/plugins/gumshoe/gumshoe.polyfills.min.js"></script>
+<script src="/assets/js/docs.js"></script>
 
 <script defer>
     type("feature-text");
