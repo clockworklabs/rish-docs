@@ -24,17 +24,16 @@ public class App : IApp
 }
 {% endhighlight %}
 
-A Rish app isn't an element, it's just a starting point and it loads the initial element for the whole app. A very common setup is to have a Root element with state (and maybe properties).
+A Rish app isn't an element, it's just the starting point and it's in charge of loading the initial element for the whole app. A very common setup is to have a Root element with state (and maybe properties).
 
 {% highlight csharp %}
 public partial class App : IApp
 {
     Element IApp.GetRoot(bool recovered) => Root.Create(text: "Hello, world!");
 
-    private partial class Root : RishElement<RootProps, RootState>, IMountingListener
+    private partial class Root : RishElement<NoProps, RootState>, IMountingListener
     {
-        public Root
-        {
+        void IMountingListener.ComponentDidMount() {
             if(StaticData.IsLoaded)
             {
                 OnLoadingProgress(1);
@@ -42,6 +41,7 @@ public partial class App : IApp
                 StaticData.OnLoadingProgress += OnLoadingProgress;
             }
         }
+        void IMountingListener.ComponentWillUnmount() { }ß
 
         protected override Element Render() {
             if(State.loaded) {
@@ -57,10 +57,6 @@ public partial class App : IApp
             state.loadingProgress = v;
             State = state;
         }
-    }
-    [RishValueType]
-    public struct RootProps {
-        
     }
     [RishValueType]
     public struct RootState {
