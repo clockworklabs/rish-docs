@@ -8,6 +8,7 @@ sections:
   - Children
   - DOMDescriptor
   - Props
+  - Render Function
 order: 3
 ---
 
@@ -16,8 +17,15 @@ Rish uses UI Toolkit as its rendering layer. This means that every visual elemen
 
 For a VisualElement to be able to be used in Rish, it has to implement the `IVisualElement` interface. Like any regular VisualElement, it can have a name (equivalent to id in HTML and CSS), it can be styled (through USS files and Rish will also provide a convenient way to inline style elements, similar to HTML) and it can have children elements.
 
+{% highlight csharp %}
+private partial class Div : VisualElement, IVisualElement
+{    
+    void IVisualElement.Render() { }
+}
+{% endhighlight %}
+
 ## Name
-In HTML, all elements can have an id attribute. The analogous in UI Toolkit, is the `name` property. Whenever we create an element definition for a Visual Element, we can specify its name. The name should be unique and it can can be helpful to identify the different elements when debugging and for styling. 
+In HTML, all elements can have an id attribute. The analogous in UI Toolkit, is the `name` property. Whenever we create an element definition for a Visual Element, we can specify its name. The name should be unique and it can be helpful to identify the different elements when debugging and for styling.
 
 {% highlight csharp %}
 private partial class Foo : RishElement
@@ -45,7 +53,7 @@ private partial class Foo : RishElement
 }
 {% endhighlight %}
 
-As a general rule, as in HTML, we would recommend favoring styling using style sheet files over inline styling. A classic example of a necessary use of inline styling, is to style an element based on Props:
+As a general rule, just like in HTML, we would recommend favoring styling using style sheet files over inline styling. A classic example of a necessary use of inline styling, is to style an element based on Props:
 
 {% highlight csharp %}
 private partial class InlineStyleExample : RishElement<InlineStyleExampleProps>
@@ -67,4 +75,66 @@ public struct InlineStyleExampleProps {
 {% endhighlight %}
 
 ## Children
-All VisualElements can have children (in future revisions we might consider a way to specify if a Visual Element should be able to have or not children).
+All VisualElements can have children (in future revisions we might consider a way to specify if a Visual Element should be able to have or not children). When defining a VisualElement, we can pass one or more children.
+
+{% highlight csharp %}
+private partial class ChildrenExample : RishElement
+{    
+    protected override Element Render() => Div.Create(
+        children: new Children {
+            Div.Create(name: "Child 0"),
+            Div.Create(name: "Child 1"),
+            Div.Create(name: "Child 2", children: new Children {
+                Div.Create(name: "Child 0 of Child 2"),
+                Div.Create(name: "Child 1 of Child 2"),
+            }),
+            Div.Create(name: "Child 3", children: Div.Create("Child 0 of Child 3")),
+            Div.Create(name: "Child 4"),
+        });
+}
+{% endhighlight %}
+
+## DOMDescriptor
+It's very common for a RishElement to act as a wrapper for a VisualElement and expect all the styling information necessary to style the VisualElement. For these scenarios, we can use `DOMDescriptor`, which containes `name`, `className` and `style`. If we use the `DOMDescriptor` attribute, these properties will be automatically expanded in the `Create` function.
+
+{% highlight csharp %}
+private partial class Example : RishElement
+{    
+    protected override Element Render() => Example.Create(name: "container", className: "class-name", style: new Style { }, children: Div.Create());
+}
+
+private partial class Container : RishElement<ContainerProps>
+{    
+    protected override Element Render() => Div.Create(
+        name: Props.descriptor.name,
+        className: Props.descriptor.className,
+        style: Props.descriptor.style,
+        children: Props.children);
+}
+
+[RishValueType]
+public struct Container {
+    [DOMDescriptor]
+    public DOMDescriptor descriptor;
+    public Children children;
+}
+{% endhighlight %}
+
+## Props
+`VisualElements` can have Props just like `RishElements`. The Props type of `VisualElements` doesn't need the `RishValueType` attribute and the `Render` function will receive the `Props` as a parameter:
+{% highlight csharp %}
+private partial class ExampleProps : VisualElement, IVisualElement<ExampleProps>
+{    
+    void IVisualElement<ExampleProps>.Render(ExampleProps props) {
+        Debug.Log($"The color is: {props.color}");
+    }
+}
+
+[RishValueType]
+public struct ExampleProps {
+    public Color color;
+}
+{% endhighlight %}
+
+## Render Function
+The purpose of the `Render` function in a `VisualElement` is to setup the element. We don't expect to add or create any children, we should just setup everything we need to make this element look like it should based on what we received through Props.
