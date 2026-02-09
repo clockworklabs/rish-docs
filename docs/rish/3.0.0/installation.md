@@ -4,16 +4,22 @@ title: Installation
 sections:
   - Dependencies
   - Set Up
+  - Samples
 order: 1
 ---
 
-Installing Rish is very simple. You just need to add (via the Package Manager or by modifying `manifest.json` under the `Packages` folder) the package `https://github.com/clockworklabs/rish#[targe-version]`.
+Installing Rish is very simple. You just need to add (via the Package Manager or by modifying `manifest.json` under the `Packages` folder) the package `https://github.com/clockworklabs/rish#[target-version]`.
 
 ## Dependencies
-Rish only depends on Unity 2022.3+ and `com.unity.collections#1.2.4`+.
+Rish depends on Unity 2022.3+, `com.unity.collections#1.2.4`+ and `io.clockworklabs.sappy#1.0.0`+.
+
+### Rishenerator (Roslyn Source Generator)
+We do not recommend using Rish without Rishenerator, the included Roslyn Source Generator. To add it to the project, search for Rish in the Package Manager, go to Samples and import Rishenerator. In the inspector, make sure the imported `Rishenerator.dll` has the `RoslynGenerator` label and has no platforms selected. 
 
 ## Set Up
 You can have more than one Rish app running at the same time. A common example of this would be an app for all the regular UI in screen space and a separate UI for all world space HUDs.
+
+Each app will create a separate UI Toolkit tree.
 
 To set up a Rish app, you need to add the component `RishRoot` to any `GameObject` (it's usually best practice to add it to a GameObject which sole purpose is to serve as a starting point for Rish). This component needs a `UIDocument` and will automatically add one to the GameObject if missing. You'll need to assign a Panel Settings to the UIDocument and a Root App to RishRoot. The root app must be a class that implements the `IApp` interface.
 
@@ -24,12 +30,12 @@ public class App : IApp
 }
 {% endhighlight %}
 
-A Rish app isn't an element, it's just the starting point and it's in charge of loading the initial element for the whole app. A very common setup is to have a Root element with state (and maybe properties).
+A Rish app isn't an element, it's just the starting point and it's in charge of defining the initial element for the whole app. A very common setup is to have a Root element with state (and maybe properties).
 
 {% highlight csharp %}
 public partial class App : IApp
 {
-    Element IApp.GetRoot(bool recovered) => Root.Create(text: "Hello, world!");
+    Element IApp.GetRoot(bool recovered) => Root.Create();
 
     private partial class Root : RishElement<NoProps, RootState>, IMountingListener
     {
@@ -38,7 +44,7 @@ public partial class App : IApp
             {
                 OnLoadingProgress(1);
             } else {
-                StaticData.OnLoadingProgress += OnLoadingProgress;
+                StaticData.OnLoadingProgress += SetLoadingProgress;
             }
         }
         void IMountingListener.ComponentWillUnmount() { }ß
@@ -50,13 +56,6 @@ public partial class App : IApp
 
             return LoadingScreen.Create(progress: State.loadingProgress);
         }
-
-        private void OnLoadingProgress(float v)
-        {
-            var state = State;
-            state.loadingProgress = v;
-            State = state;
-        }
     }
     [RishValueType]
     public struct RootState {
@@ -66,3 +65,6 @@ public partial class App : IApp
     }
 }
 {% endhighlight %}
+
+## Samples
+We recommend installing Roots, importing the samples, play around and look at the code for a little bit before moving on with the next sections.

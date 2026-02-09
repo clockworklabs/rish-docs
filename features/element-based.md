@@ -6,4 +6,4 @@ order: 0
 
 <p>The UI is built by composing individual pieces together. Create Rish elements like ItemFrame, FavButton and CraftingRecipe. Then combine them into entire screens, pages, and apps.</p>
 
-<p>It's like playing with LEGO!</p>
+<p>It's just like playing with LEGO!</p>

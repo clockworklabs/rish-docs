@@ -3,7 +3,7 @@ layout: docs
 title: Events
 sections:
   - Manipulators
-  - Reference
-order: 6
+  - Callbacks
+order: 7
 ---
 
