@@ -7,13 +7,14 @@ sections:
   - It's just C#
   - Roots
 order: 0
+icon: handshake
 ---
 
-Welcome to Rish! Rish is a declarative UI library for Unity. It (losely) follows React's paradigm, so it's probably useful to know the basics and get familiar with the ideas behind React. Rish uses UI Toolkit as the render layer.
+Welcome to Rish! Rish is a declarative UI library for Unity. It (losely) follows React's paradigm, so it's probably useful to know the basics and get familiar with the ideas behind React (or other declarative UI frameworks). Rish uses UI Toolkit as the render layer.
 
 By declarative UI, we mean you tell the computer what to do, not how to do it. It has all the benefits of an immediate mode UI, but it's also stateful. Rish automatically detects which elements should be updated and re-rendered. That's why we say it combines the best of both retained and immediate modes.
 
-Implemented properly, you should get a deterministic UI: Given a specific state, there's only one posible UI result. Something quite hard to achieve with different architectures.
+Implemented properly, you should get a deterministic UI: The UI is always in sync with your game state. Something quite hard to achieve with other paradigms.
 
 ## Creating and nesting elements
 Rish apps are made out of elements (in React, they're called Components, but we've decided to stick to calling them Elements following UI Toolkit's naming). An element is a piece of the UI that has it's own logic and appearence.
@@ -51,7 +52,7 @@ All `RishElements` are added to a Virtual Tree. The Visual Tree is a subset of t
 
 ## Elements Inputs
 ### Props
-When defining elements, you can pass down data to them, we call this data "properties". Both `RishElements` and `VisualElements` can receive properties. Everything in Rish is strictly typed. For an element to have properties, you have to define what they are. Properties types must be structs and they have to be flagged with the `RishValueType` attribute.
+When defining elements, you can pass down data to them, we call this data "properties". Both `RishElements` and `VisualElements` can receive properties. Everything in Rish is strictly typed. Properties types must be structs and they have to be flagged with the `RishValueType` attribute.
 
 {% highlight csharp %}
 public partial class Card : RishElement<CardProps> {
@@ -81,8 +82,10 @@ public partial class App : RishElement {
 
 Properties can only be passed down from ancestors, when you're defining the elements.
 
+To avoid confusion with C# properties, from now on we'll refer to them as Props.
+
 ### State
-Alongside properties, `RishElements` can also have internal state. State must be also be a struct value type flagged with the `RishValueType` attribute. The main difference with properties, is that state is completely internally set by the element.
+Alongside Props, `RishElement`s can also have internal state. State must also be a struct value type flagged with the `RishValueType` attribute. The main difference with properties, is that State is internally set by the RishElement.
 
 {% highlight csharp %}
 public partial class Counter : RishElement<NoProps, CardState> {
@@ -102,12 +105,12 @@ public struct CounterState {
 {% endhighlight %}
 
 ### Dirty Elements
-Rish will automatically detect changes in `Props` or `State` and flag the element as dirty, triggering it to be re-rendered. There are ways of manually flagging an element as dirty but they should only be used when extrictly necessary if you're sure of what you're doing. We'll cover how to do this in a future section.
+Rish will automatically detect changes in Props or State and flag the element as dirty, triggering it to be re-rendered. There are ways of manually flagging an element as dirty but they should only be used when extrictly necessary if you're sure of what you're doing. We'll cover how to do this in a future section.
 
 ### Determinism
-Since our goal is to accomplish a deterministic UI, we'll think about all the UI pieces as pure functions with properties and state as the inputs. The Render function, must always return the same result for the same properties and state.
+Since our goal is to accomplish a deterministic UI, we'll think about all the UI pieces as pure functions with Props and State as the inputs. The Render function, must always return the same result for the same properties and state.
 
-This means, in the `Render` method, we should try to only use `Props` and `State`. Implemented this way, most of the UI programming asociated head aches are simply gone.
+This means, in the `Render` method, we should try to only use Props and State. Implemented this way, once the required mental shift is done, a lot (if not most) of the UI programming asociated head aches are simply gone.
 
 ## It's just C#
 Rish is implemented entirely in C# and all your UI written using solely C# (besides USS style sheets). This means you can just do pretty much anything you can think of. In comparison to some other alternatives, there's no weird new syntax or language to learn, no faulty bridges between different technology stacks and no missing features due to architecture incompatibilities. You can access Unity's API, all your game data, you can use `if` statement, `for` loops, LINQ... it's all there for you to use. And it's fast.

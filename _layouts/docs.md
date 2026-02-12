@@ -35,7 +35,7 @@ layout: default
 				{% assign pages = site.pages | sort: "order" %}
 			  	{% for docs in pages %}
 					{% if docs.url contains target_url %}
-						<li class="nav-item section-title{% if docs.url == page.url %} active{% endif %} {% if i > 0 %} mt-3{% endif %}"><a class="nav-link" href="{{ docs.url }}"><span class="theme-icon-holder me-2"><i class="fas fa-map-signs"></i></span>{{ docs.title }}</a></li>
+						<li class="nav-item section-title{% if docs.url == page.url %} active{% endif %} {% if i > 0 %} mt-3{% endif %}"><a class="nav-link" href="{{ docs.url }}"><span class="theme-icon-holder me-2"><i class="fas fa-{% if docs.icon %}{{ docs.icon }}{% else %}right-long{% endif %}"></i></span>{{ docs.title }}</a></li>
 						{% if docs.url == page.url %}
 							{% for docs-section in docs.sections %}
 								<li class="nav-item"><a class="nav-link scrollto" href="#{{ docs-section | slugify }}">{{ docs-section }}</a></li>
@@ -92,3 +92,14 @@ layout: default
 <script src="/assets/plugins/gumshoe/gumshoe.polyfills.min.js"></script>
 <script src="/assets/js/docs.js"></script>
 
+<script defer>
+	// Get the header
+	var header = document.querySelector('#navbar-header');
+
+	// Initialize Gumshoe
+	var spy = new Gumshoe('#docs-sidebar a', {
+		offset: function () {
+			return header.getBoundingClientRect().height;
+		}
+	});
+</script>

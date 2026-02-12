@@ -1,11 +1,9 @@
 ---
 layout: docs
-title: Layout Elements
+title: Utilities
 sections:
-  - Container
-  - Grid System
-  - Responsive Context
-order: 3
+order: 14
+icon: toolbox
 ---
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque finibus condimentum nisl id vulputate. Praesent aliquet varius eros interdum suscipit. Donec eu purus sed nibh convallis bibendum quis vitae turpis. Duis vestibulum diam lorem, vitae dapibus nibh facilisis a. Fusce in malesuada odio.

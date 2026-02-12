@@ -6,6 +6,8 @@ sections:
   - Mounting and Unmounting
   - Update Chain
 order: 2
+# icon: timeline
+icon: arrows-turn-to-dots
 ---
 
 Rish handles how and when to update and render the Virtual Tree and Visual Trees, it also automatically pools all the elements to avoid garbage and optimize memory.
@@ -24,40 +26,6 @@ If the new element is a RishElement, Rish sets up its properties, flags it as di
 If it's instead a VisualElement, Rish sets up its UI Toolkit properties (name, class name and inline style), calls the `Setup` method with the Rish properties and attaches all the children. Each of these children are also Dirty when they get added to the tree and the cycle repeats.
 
 When an element is no longer needed, all of its children are unmounted first, then the element also gets unmounted from the tree and they are all returned to the pool, ready to be reused.
-
-### Callbacks
-A `RishElement` can implement the `IMountingListener` interface to receive callbacks for when the it gets mounted and right before it gets unmounted.
-
-{% highlight csharp %}
-private partial class FooElement : RishElement, IMountingListener
-{
-    void IMountingListener.ComponentDidMount() {
-        Debug.Log("Element mounted");
-    }
-    void IMountingListener.ComponentWillUnmount() { 
-        Debug.Log("Element will be unmounted");
-    }
-
-    protected override Element Render() => Element.Null;
-}
-{% endhighlight %}
-
-For cases when your element needs some instance state (not Rish state, but actual C# instance variables or properties) that you need to restart before the element gets reused (from the pool), you can add `IManualState` listener.
-
-{% highlight csharp %}
-private partial class FooElement : RishElement, IManualState
-{
-    private HashSet<int> Indices { get; } = new();
-    
-    void IManualState.Restart() {
-       Indices.Clear();
-    }
-
-    // ...
-}
-{% endhighlight %}
-
-It's important to know that `IManualState.Restart` will be called right before the element gets reused, so we shouldn't use this method to unsubsribe from events or cancel actions since they'll keep happening after the element is unmounted.
 
 ## Update Chain
 Elements will trigger an update chain any time they are dirty. An element is automatically flagged as dirty anytime its `Props` or `State` change. If an element is dirty, Rish will re render it by calling its `Render` function. The call to `Render` can result in elements to be reused with no changes, elements to be reused with changes (different properties), new elements to be added and/or elements to be removed. If any element has to be added or reused with different `Props`, then it will be flagged as dirty and Rish will call its `Render` function when it's its turn. That's why we call it an update chain. If at any level, we render an element and none of its children are changed, the update chain finishes. This way we can trust that Rish will only update and re-rendered the elements that strictly need to.
