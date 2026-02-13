@@ -10,19 +10,31 @@ order: 0
 icon: handshake
 ---
 
-Welcome to Rish! Rish is a declarative UI library for Unity. It (losely) follows React's paradigm, so it's probably useful to know the basics and get familiar with the ideas behind React (or other declarative UI frameworks). Rish uses UI Toolkit as the render layer.
+Welcome to **Rish**! Rish is a declarative UI library for Unity that uses **UI Toolkit** as its render layer.
 
-By declarative UI, we mean you tell the computer what to do, not how to do it. It has all the benefits of an immediate mode UI, but it's also stateful. Rish automatically detects which elements should be updated and re-rendered. That's why we say it combines the best of both retained and immediate modes.
+If you are familiar with React or other declarative UI frameworks, you will feel right at home. Rish (loosely) follows the React paradigm: you tell the computer what to do, not how to do it.
 
-Implemented properly, you should get a deterministic UI: The UI is always in sync with your game state. Something quite hard to achieve with other paradigms.
+### Why Rish?
+**Declarative:** You define the desired state of the UI, and Rish handles the updates.
+
+**Best of Both Worlds:** It combines the benefits of Immediate Mode (code-driven, logical) with Retained Mode (stateful, efficient).
+
+**Deterministic:** Implemented properly, your UI becomes a pure function of your game state. Always in sync and (hopefully 🤞) bug-free.
 
 ## Creating and nesting elements
-Rish apps are made out of elements (in React, they're called Components, but we've decided to stick to calling them Elements following UI Toolkit's naming). An element is a piece of the UI that has it's own logic and appearence.
+Rish apps are built using Elements (a piece of the UI that has it's own logic and appearence). (Note: While React calls them "Components," we stick to "Elements" to align with UI Toolkit's naming conventions).
 
-### Visual and Virtual Trees
-In Rish there are two types of Elements: `RishElements` and `VisualElements`. `VisualElements` are UI Toolkit elements and as such, they're the pieces that get added and rendered to UI Toolkit's Visual Tree. In HTML and React, these would be the DOM Element objects (like `div`, `button`, `a`). For a `VisualElement` to be able to be used in Rish, it has to implement the interface `IVisualElement`. All `VisualElements` can have a name, a list of USS class names, inline style and children passed down when defined. The recomendation would be to not create a massive collection of `VisualElements` since they are necessary only for the render layer, it's better to leave the heavy lifting and more complex logic for `RishElements` (unless not possible).
+There are two distinct types of elements in Rish:
 
-`RishElements` are the core pieces in Rish. In React, these would be the React Elements, but there are some key differences. `RishElements` are classes that inherit from `RishElement` and they need to implement a `Render` method that returns an `Element`.
+### VisualElements (The Render Layer)
+These are standard UI Toolkit elements that implement the `IVisualElement` interface to be used in Rish. They are the actual objects added to Unity's UI Toolkit Visual Tree.
+
+Best Practice: Avoid creating complex logic here. Use these primarily for rendering.
+
+### RishElements (The Logic Layer)
+These are the core building blocks of your application (similar to React Components). They inherit from `RishElement` and they must implement a `Render()` method that returns an `Element`.
+
+Here are two basic example of a RishElement:
 
 {% highlight csharp %}
 public partial class WelcomeTitle : RishElement {
@@ -36,7 +48,7 @@ public partial class WelcomeMessage : RishElement {
 }
 {% endhighlight %}
 
-Elements can be nested in another element.
+Elements are designed to be composed. You can nest elements inside one another.
 
 {% highlight csharp %}
 public partial class App : RishElement {
@@ -48,11 +60,18 @@ public partial class App : RishElement {
 }
 {% endhighlight %}
 
-All `RishElements` are added to a Virtual Tree. The Visual Tree is a subset of the Virtual Tree, where all `RishElements` have been squashed down. In the Virtual Tree, each `RishElement` is a parent of the element returned by the `Render` function and `VisualElements` are parents of the elements passed down as children. Currently there's no way to preview and inspect the Virtual Tree, but you can inspect the Visual Tree using the `UI Toolkit Debugger`.
+<div class="callout-block callout-block-info">
+    <div class="content">
+        <h4 class="callout-title"><i class="fa-solid fa-circle-info"></i>The Virtual Tree</h4>
+        <p>All RishElements exist in a "Virtual Tree". This is a superset of the Visual Tree. When Rish renders, it "squashes" the RishElements down, leaving only the VisualElements in the actual UI Toolkit hierarchy. You can inspect the final result using the UI Toolkit Debugger.</p>
+    </div>
+</div>
 
-## Elements Inputs
-### Props
-When defining elements, you can pass down data to them, we call this data "properties". Both `RishElements` and `VisualElements` can receive properties. Everything in Rish is strictly typed. Properties types must be structs and they have to be flagged with the `RishValueType` attribute.
+## Inputs and Data Flow
+Rish is strictly typed. To pass data into your elements or manage internal data, you use **Props** and **State**. Both must be `structs` flagged with the `[RishValueType]` attribute.
+
+### Props (External Data)
+Props allow you to pass data _down_ from a parent element to a child.
 
 {% highlight csharp %}
 public partial class Card : RishElement<CardProps> {
@@ -70,6 +89,7 @@ public struct CardProps {
     public RishString message;
 }
 
+// Usage in a parent element
 public partial class App : RishElement {
     protected override Element Render() => Col.Create(
         children: new Children
@@ -80,12 +100,8 @@ public partial class App : RishElement {
 }
 {% endhighlight %}
 
-Properties can only be passed down from ancestors, when you're defining the elements.
-
-To avoid confusion with C# properties, from now on we'll refer to them as Props.
-
-### State
-Alongside Props, `RishElement`s can also have internal state. State must also be a struct value type flagged with the `RishValueType` attribute. The main difference with properties, is that State is internally set by the RishElement.
+### State (Internal Data)
+State is data managed _internally_ by the element itself. When state changes, Rish automatically detects it and re-renders the element.
 
 {% highlight csharp %}
 public partial class Counter : RishElement<NoProps, CardState> {
@@ -104,25 +120,30 @@ public struct CounterState {
 }
 {% endhighlight %}
 
-### Dirty Elements
-Rish will automatically detect changes in Props or State and flag the element as dirty, triggering it to be re-rendered. There are ways of manually flagging an element as dirty but they should only be used when extrictly necessary if you're sure of what you're doing. We'll cover how to do this in a future section.
+### Reactivity and Determinism
+Rish automatically detects changes in **Props** or **State** and flags the element as "dirty," triggering a re-render.
 
-### Determinism
-Since our goal is to accomplish a deterministic UI, we'll think about all the UI pieces as pure functions with Props and State as the inputs. The Render function, must always return the same result for the same properties and state.
+To achieve a Deterministic UI, treat your `Render` method as a Pure Function:
 
-This means, in the `Render` method, we should try to only use Props and State. Implemented this way, once the required mental shift is done, a lot (if not most) of the UI programming asociated head aches are simply gone.
+<div class="alert alert-dark text-center" role="alert"><b>UI=f(State,Props)</b></div>
 
-## It's just C#
-Rish is implemented entirely in C# and all your UI written using solely C# (besides USS style sheets). This means you can just do pretty much anything you can think of. In comparison to some other alternatives, there's no weird new syntax or language to learn, no faulty bridges between different technology stacks and no missing features due to architecture incompatibilities. You can access Unity's API, all your game data, you can use `if` statement, `for` loops, LINQ... it's all there for you to use. And it's fast.
+If you ensure your `Render` method relies _only_ on Props and State, your UI will always be predictable and in sync with your data.
+
+## The C# Advantage
+Rish is 100% C#. There is no custom templating language or XML to learn. No weird setups to bridge different technologies stacks. You have direct access to your game data and Unity's APIs, you can use `if` statements, `for` loops, LINQ... you name it.
 
 {% highlight csharp %}
 public partial class ItemCard : RishElement<ItemCardProps> {
     protected override Element Render() {
+        // Access global game data
         var item = StaticData.GetItem(Props.id);
+
+        // Standard C# control flow
         if(item.hidden) {
             return Element.Null;
         }
 
+        // Complex logic using LINQ
         var recipesCount = StaticData.CraftingRecipes.Count(r => r.output == Props.id);
 
         return Card.Create(title: item.Name, message: $"There are {recipesCount} ways of crafting {item.Name}.");
@@ -135,6 +156,8 @@ public struct ItemCardProps {
 {% endhighlight %}
 
 ## Roots
-Rish is just a UI library, it's not a framework. We're trying to not impose anything on you and that's why it comes with virtually no elements out of the box. You can build all the elements you want/need using it the way that better suits your needs. But if you want a head start or a reference to look at, we have implemented a whole collection of elements called [Roots][roots-docs].
+Rish is a UI library, not a rigid or opinionated framework. We're trying to not impose anything on you and that's why it comes with virtually no elements. You have the freedom to implement your library of elements the way that better suits your needs.
 
-[roots-docs]: /docs/roots/1.0.0/quick-start
+However, if you want a head start, we have created **Roots**, a collection of ready-to-use elements built with Rish.
+
+[Check out the Roots documentantion](/docs/roots/1.0.0/quick-start)

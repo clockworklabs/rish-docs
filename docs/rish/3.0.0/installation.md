@@ -2,55 +2,99 @@
 layout: docs
 title: Installation
 sections:
-  - Dependencies
-  - Set Up
-  - Samples
+  - Installation
+  - Setup
+  - Next Steps
 order: 1
 icon: download
 ---
 
-Installing Rish is very simple. You just need to add (via the Package Manager or by modifying `manifest.json` under the `Packages` folder) the package `https://github.com/clockworklabs/rish#[target-version]`.
+## Instalation
+Installing Rish is simple. You can add the package via the Unity Package Manager using the Git URL, or by modifying your manifest.json file directly.
 
-## Dependencies
-Rish depends on Unity 2022.3+, `com.unity.collections#1.2.4`+ and `io.clockworklabs.sappy#1.0.0`+.
+Add the following package URL: `https://github.com/clockworklabs/rish#[target-version]`
 
-### Rishenerator (Roslyn Source Generator)
-We do not recommend using Rish without Rishenerator, the included Roslyn Source Generator. To add it to the project, search for Rish in the Package Manager, go to Samples and import Rishenerator. In the inspector, make sure the imported `Rishenerator.dll` has the `RoslynGenerator` label and has no platforms selected.
+#### Dependencies
+Rish requires the following dependencies to function correctly:
+- Unity: 2022.3 or higher.
+- Collections: `com.unity.collections` (version `1.2.4+`).
+- [Sappy](https://github.com/clockworklabs/sappy): `io.clockworklabs.sappy` (version `1.0.0+`).
 
-While strickly not necessary, because you can write all the necessary code yourself, we seriously can't stress enough how much better is to use Rishenerator: it reduces drastically the development time, makes the code much easier to mantain and much less error prone, it improves the readability of the code and, most importantly, it automatically handles all the necessary stuff to keep Rish fast and memory efficient. For the rest of the guide, we'll assume Rishenerator is being used. 
+### Rishenerator (Source Generator)
+Rish comes with a Roslyn Source Generator called **Rishenerator**. While it is technically possible to write all your Rish code manually, **we strongly recommend using Rishenerator**.
 
-## Set Up
-You can have more than one Rish app running at the same time. A common example of this would be an app for all the regular UI in screen space and a separate UI for all world space HUDs.
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title"><i class="fa-solid fa-circle-info"></i>Why use Rishenerator?</h4>
+        <ul>
+            <li><b>Drastically reduces development time</b> by automating boilerplate.</li>
+            <li><b>Eliminates errors</b> associated with manual implementation.</li>
+            <li><b>Optimizes performance</b> and memory efficiency automatically.</li>
+        </ul>
+    </div>
+</div>
 
-Each app will create a separate UI Toolkit tree.
+#### Installing Rishenerator
+1. Open the **Package Manager**.
+2. Select the **Rish** package.
+3. Go to the **Samples** tab and import **Rishenerator**.
+4. In your project assets, locate the imported `Rishenerator.dll`.
+5. **Crucial Step:** In the Inspector for the DLL:
+  - Ensure the **Select platforms for plugin** list is empty (no platforms selected).
+  - Add (if not present already) the `RoslynAnalyzer` label.
 
-To set up a Rish app, you need to add the component `RishRoot` to any `GameObject` (it's usually best practice to add it to a GameObject which sole purpose is to serve as a starting point for Rish). This component needs a `UIDocument` and will automatically add one to the GameObject if missing. You'll need to assign a Panel Settings to the UIDocument and a Root App to RishRoot. The root app must be a class that implements the `IApp` interface.
+_Note: This guide assumes Rishenerator is enabled._
+
+## Setup
+You can run multiple Rish apps simultaneously (e.g., one for Screen Space UI and another for World Space HUDs). Each app manages its own UI Toolkit tree.
+
+To set up a Rish App in your scene:
+1. Create an empty **GameObject** (e.g., named "UI_Root").
+2. Add the `RishRoot` component to it.
+  - _Note: This will automatically add a UIDocument component if one is missing._
+3. Assign your **Panel Settings** to the `UIDocument`.
+4. Create a class that implements `IApp` and assign it to the `RishRoot`.
+
+### Defining an App
+A Rish App is the entry point for your UI. It is not an Element itself; rather, it defines the root element for the entire tree.
+
+#### Basic Example
+For a stateless, simple UI:
 
 {% highlight csharp %}
 public class App : IApp
 {
+    // The 'recovered' parameter indicates if the app has been recovered and relaunched after a crash.
+    // You can use this to show a message or something.
     Element IApp.GetRoot(bool recovered) => H1.Create(text: "Hello, world!");
 }
 {% endhighlight %}
 
-A Rish app isn't an element, it's just the starting point and it's in charge of defining the initial element for the whole app. A very common setup is to have a Root element with state (and maybe properties).
+#### Advanced Example (Stateful Root)
+A common pattern is to have a "Root" element that manages high-level state (like loading screens) and mounts the rest of the application.
 
 {% highlight csharp %}
 public partial class App : IApp
 {
     Element IApp.GetRoot(bool recovered) => Root.Create();
 
+    // The internal Root element manages the application state
     private partial class Root : RishElement<NoProps, RootState>, IMountingListener
     {
         void IMountingListener.ComponentDidMount() {
             if(StaticData.IsLoaded)
             {
+                // If data is already ready, set progress immediately
+                // (Using a helper method or direct state update logic here)
                 OnLoadingProgress(1);
             } else {
+                // Subscribe to loading events
                 StaticData.OnLoadingProgress += SetLoadingProgress;
             }
         }
-        void IMountingListener.ComponentWillUnmount() { }ß
+        void IMountingListener.ComponentWillUnmount() {
+            StaticData.OnLoadingProgress -= SetLoadingProgress;
+        }
 
         protected override Element Render() {
             if(State.loaded) {
@@ -60,6 +104,7 @@ public partial class App : IApp
             return LoadingScreen.Create(progress: State.loadingProgress);
         }
     }
+
     [RishValueType]
     public struct RootState {
         public float loadingProgress;
@@ -69,5 +114,5 @@ public partial class App : IApp
 }
 {% endhighlight %}
 
-## Samples
-We recommend installing Roots, importing the samples, play around and look at the code for a little bit before moving on with the next sections.
+## Next Steps
+Now that you have the library installed, we recommend installing [**Roots**](/docs/roots/1.0.0/quick-start) and importing its samples to see working code in action.
