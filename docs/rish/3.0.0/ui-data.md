@@ -161,6 +161,7 @@ public partial class InventoryPocketTitle : RishElement, IMountingListener, IPro
         SetQuantity(pocket.Quantity);
     }
 }
+{% endhighlight %}
 
 ##### Direct Reference Usage (Use with Caution)
 If you must pass a reference type (e.g., a `Texture2D` or a `ScriptableObject` configuration), remember that Rish defaults to **Reference Equality** and if the content of the object changes but the reference stays the same, Rish will not detect the change and will not re-render.
