@@ -3,63 +3,78 @@ layout: docs
 title: VisualElements
 sections:
   - Visual Tree
-  - Name
   - Styling
-  - Children
   - Props
-  - Render
-  - Bridge
-  - Pointer Detection
-  - Styled Props
-  - Callbacks
+  - Composition (Children)
+  - Input Handling
+  - Lifecycle and Callbacks
+  - The Render Process
 order: 3
 icon: eye
 ---
 
 ## Visual Tree
-Rish uses UI Toolkit as its rendering layer. This means that every visual UI piece that gets rendered to the screen is a UIToolkit's VisualElement being added to a UIToolkit's Tree. You can debug this tree using UI Toolkit's Debugger. Nothing in the Visual Tree built by Rish is any different or especial than any other UI Toolkit tree, the difference is on how we build and update such tree.
+Rish uses **UI Toolkit** as its rendering backend. Every piece of UI that actually appears on screen is a standard Unity `VisualElement` added to the Visual Tree.
 
-For a VisualElement to be able to be used in Rish, it has to implement the `IVisualElement` interface.
+Nothing in the Visual Tree built by Rish is "magic", custom or special. The difference lies in how we build and update that tree.
+
+For a `VisualElement` to be usable in Rish, it must implement the `IVisualElement` interface.
+
+Because Rish needs to manage the lifecycle and updates of these elements, every implementation requires two specific internal components: a **Bridge** and a **PickingManager**.
+
+#### The Standard Boilerplate
+Here is the minimal setup required to create a valid Rish VisualElement:
 
 {% highlight csharp %}
 private partial class Div : VisualElement, IVisualElement
 {    
+    // 1. The Bridge: Connects Rish logic to the Unity VisualElement
+    private Bridge Bridge { get; }
+    Bridge IVisualElement.Bridge => Bridge;
+
+    // 2. The PickingManager: Handles input detection (Raycasting)
+    private PickingManager PickingManager { get; }
+    PickingManager ICustomPicking.Manager => PickingManager;
+
+    // 3. Constructor: Initialize components
+    public Div()
+    {
+        Bridge = new Bridge(this);
+        PickingManager = new RectPickingManager(Bridge);
+    }
+    
+    // 4. Setup: Called when Props change
     void IVisualElement.Setup() { }
 }
 {% endhighlight %}
 
-## Name
-In HTML, all elements can have an id attribute. The analogous in UI Toolkit is the `name` property. Whenever we create an element definition for a Visual Element, we can specify its name. The name should be unique and it can be helpful both to identify and style elements.
-
-{% highlight csharp %}
-private partial class Foo : RishElement
-{    
-    protected override Element Render() => Div.Create(name: "foo");
-}
-{% endhighlight %}
-
 ## Styling
-UI Toolkit uses a subset of CSS called [USS](https://docs.unity3d.com/Manual/UIToolkits.html). You can style elements using USS files and class names or via inline styles when creating the different element definitions.
+Just like HTML elements have an `id`, UI Toolkit elements have a `name`. This is useful for styling but also for debugging and querying elements in the UI Toolkit Debugger.
 
 {% highlight csharp %}
-private partial class Foo : RishElement
-{    
-    protected override Element Render() => Div.Create(
-        className: "foo",
-        style: new Style { 
-            backgroundColor: Color.red
-        },
-        children: Div.Create(
-            className: new ClassName {
-                "class-0",
-                "class-1",
-                "class-2"
-            }));
-}
+protected override Element Render() => Div.Create(name: "main-container");
 {% endhighlight %}
 
-As a general rule, just like in HTML, we would recommend favoring the use of style sheets over inline styling (note that Unity recommends using USS files when possible because it performs better also). A classic example of a necessary use of inline styling, is to style an element based on Props (or State):
+UI Toolkit uses **USS** (a subset of CSS). You can style elements by assigning class names or by using inline styles directly in C#.
 
+{% highlight csharp %}
+protected override Element Render() => Div.Create(
+    className: "card", // Reference to USS class
+    style: new Style { // Inline style
+        backgroundColor = Color.red,
+        marginTop = 10
+    });
+{% endhighlight %}
+
+<div class="callout-block callout-block-warning">
+    <div class="content">
+        <h4 class="callout-title"><i class="fa-solid fa-circle-info"></i>Best Practice</h4>
+        <p>Favor <strong>USS stylesheets</strong> (via <code>className</code>) over inline styles. Unity optimizes stylesheets better (and supports live reloading of USS assets) and it keeps your style and layout logic separate from your code.</p>
+        <p>Use <strong>Inline Styles</strong> only when the style depends on dynamic data from Props or State.</p>
+    </div>
+</div>
+
+#### Dynamic Styling Example
 {% highlight csharp %}
 private partial class InlineStyleExample : RishElement<InlineStyleExampleProps>
 {    
@@ -79,35 +94,21 @@ public struct InlineStyleExampleProps {
 }
 {% endhighlight %}
 
-## Children
-All VisualElements can have children (in future revisions we might consider a way to specify if a Visual Element should be able to have 0, 1, ..., n or any number of children). When defining a VisualElement, we can define children elements and pass them down using the children property.
-
-{% highlight csharp %}
-private partial class ChildrenExample : RishElement
-{    
-    protected override Element Render() => Div.Create(
-        children: new Children {
-            Div.Create(name: "Child 0"),
-            Div.Create(name: "Child 1"),
-            Div.Create(
-                name: "Child 2",
-                children: new Children {
-                    Div.Create(name: "Child 0 of Child 2"),
-                    Div.Create(name: "Child 1 of Child 2"),
-                }),
-            Div.Create(name: "Child 3", children: Div.Create("Child 0 of Child 3")),
-            Div.Create(name: "Child 4"),
-        });
-}
-{% endhighlight %}
-
 ## Props
-Similarly to `RishElements`, `VisualElements` can have Props. They also need to be a struct type and have the `RishValueType` attribute. The `Setup` method will receive them as a parameter:
+Just like `RishElements`, `VisualElements` can receive strongly-typed **Props**.
+
+When defining a VisualElement with props, you implement `IVisualElement<T>`. The `Setup` method is where you use these props and apply them to the underlying UI Toolkit element.
+
 {% highlight csharp %}
 private partial class ExampleProps : VisualElement, IVisualElement<ExampleProps>
-{    
+{
+    private Bridge<ExampleProps> Bridge { get; }
+    Bridge IVisualElement<ExampleProps>.Bridge => Bridge;
+
+    // ...
+
     void IVisualElement<ExampleProps>.Setup(ExampleProps props) {
-        Debug.Log($"The color is: {props.color}");
+        style.backgroundColor = props.color;
     }
 }
 
@@ -117,120 +118,76 @@ public struct ExampleProps {
 }
 {% endhighlight %}
 
-The purpose of the `Setup` method in a `VisualElement` is to use the Props to setup the element. We don't expect to add or create any children, we should just setup everything we need to make this element look like it should based on what we received through Props.
+<div class="callout-block callout-block-info">
+    <div class="content">
+        <h4 class="callout-title">Note</h4>
+        <p>The purpose of <code>Setup</code> is strictly to configure the element's own properties (color, text, texture, etc.). You should <strong>not</strong> add or remove children inside <code>Setup</code>.</p>
+    </div>
+</div>
 
-## Render
-When rendering a VisualElement, Rish first sets up the `name`, `className` and `style` attributes (in that order), then it calls the `Setup` method (only if the Props changed) and, lastly, it adds all the children (and the update chain continues).
+## Composition (Children)
+Rish handles the hierarchy for you. You pass children into a VisualElement via the `children` parameter in the `Create` method.
 
-It's important to understand that the visual update and layout of the VisualElements still happen on UI Toolkit's side and won't happen immediately. For this reason, for example, the `resolvedStyle` of a VisualElement won't reflect the new values until UI Toolkit processes it.
-
-## Bridge
-When implementing the `IVisualElement` or `IVisualElement<PropsType>` interface, you'll need to provide a `Bridge`. This is the bridge between Rish and UI Toolkit and it handles setting up the VisualElement and updating it only when its inputs are dirty.
-
-The `Bridge` class has a constructor that requires the VisualElement as an argument. This is the usual setup:
 {% highlight csharp %}
-private partial class Div : VisualElement, IVisualElement
-{
-    private Bridge Bridge { get; }
-    Bridge IVisualElement.Bridge => Bridge;
-    
-    public Div()
-    {
-        Bridge = new Bridge(this);
-    }
-    
-    // ...
-}
+protected override Element Render() => Div.Create(
+    children: new Children {
+        Div.Create(name: "Header"),
+        Div.Create(name: "Body", children: new Children {
+             Div.Create(name: "Content A"),
+             Div.Create(name: "Content B")
+        }),
+        Div.Create(name: "Footer")
+    });
+{% endhighlight %}
 
-private partial class ComplexVisualElement : VisualElement, IVisualElement<ComplexVisualElementProps>
-{
-    private Bridge<ComplexVisualElementProps> Bridge { get; }
-    Bridge IVisualElement<ComplexVisualElementProps>.Bridge => Bridge;
-    
-    public Div()
-    {
-        Bridge = new Bridge<ComplexVisualElementProps>(this);
-    }
-    
-    // ...
+## Input Handling
+To handle user input (clicks, hovers, drags) correctly, Rish needs to know if a pointer is "inside" the element. This is handled by the `PickingManager`.
+- `RectPickingManager`: Returns true for any point inside the element's layout rectangle. (Standard behavior).
+- `DiscardPickingManager`: Always returns false. Use this for elements that should be "invisible" to the mouse (pass-through).
+
+_Future versions of Rish will include PickingManagers that support rounded corners and transparency checks._
+
+## Lifecycle and Callbacks
+Rish provides interfaces to hook into the lifecycle of a `VisualElement`.
+
+### Mounting Events (IMountingListener)
+Useful for initialization logic or event subscription.
+
+{% highlight csharp %}
+void IMountingListener.ComponentDidMount() {
+    Debug.Log("Element added to the Visual Tree");
+}
+void IMountingListener.ComponentWillUnmount() { 
+    Debug.Log("Element about to be removed");
 }
 {% endhighlight %}
 
-## Pointer Detection
-In any real world application we'll need UI elements to be able to detect input from the user. To handle pointers input correctly, we use Picking Managers. The `IVisualElement` interface, implements the `ICustomPicking` interface which forces us to provide a `PickingManager`. A Picking Manager implements a `Raycast` method and determines if a point is within the element or not to be used in input events. For now, we have `DiscardPickingManager` (which always returns false, for elements that should never react to input) and `RectPickingManager`.
+### Pooling Reset (IManualState)
+If your VisualElement uses instance state that needs to be reset before the element is reused, you can use `IManualState`.
 
-`RectPickingManager` returns true for all points within the layout rect of a VisualElement. In future versions, we'll add support to more advance Picking Manager to allow ignoring points over rounded corners or transparent parts of an image. 
-
-The usual setup looks like this:
 {% highlight csharp %}
-private partial class Div : VisualElement, IVisualElement
+private partial class SpriteSheet : VisualElement, IVisualElement<SpriteSheetProps>, IManualState
 {
-    private Bridge Bridge { get; }
-    Bridge IVisualElement.Bridge => Bridge;
-
-    private PickingManager PickingManager { get; }
-    PickingManager ICustomPicking.Manager => PickingManager;
-
-    public Div()
-    {
-        Bridge = new Bridge(this);
-        PickingManager = new RectPickingManager(Bridge);
-    }
+    private List<Sprite> Frames { get; set; }
     
-    // ...
-}
-{% endhighlight %}
-
-## Styled Props
-Since VisualElements are styled units of UI and we use Props to set them up, it's natural that we should be able to set some Props via USS style sheets too. For this, we have the `IStyledProps` interface.
-
-This API will change and improve in a future version and much of the boilerplate code will be autogenerated by Rishenerator. For this reason, we won't cover it in detail for now.
-
-## Callbacks
-Rish offers many interfaces that VisualElements can implement to listen for important events.
-
-### Mounting and Unmounting
-A `VisualElement` can implement the `IMountingListener` interface to receive callbacks when it gets mounted and right before it gets unmounted.
-
-{% highlight csharp %}
-private partial class FooElement : VisualElement, IVisualElement, IMountingListener
-{
-    void IMountingListener.ComponentDidMount() {
-        Debug.Log("Element mounted");
-    }
-    void IMountingListener.ComponentWillUnmount() { 
-        Debug.Log("Element will be unmounted");
-    }
-
-    protected override Element Setup() { }
-}
-{% endhighlight %}
-
-For cases when your element needs some instance state (not Rish state, but actual C# instance variables or properties) that you need to restart before the element gets reused (from the pool), you can add `IManualState` listener.
-
-{% highlight csharp %}
-private partial class FooElement : VisualElement, IVisualElement, IManualState
-{
-    private List<Sprite> SpriteSheet { get; set; }
-    
+    // Called right BEFORE the element is reused from the pool
     void IManualState.Restart() {
-        SpriteSheet.Clear();
+        Frames.Clear();
     }
 
     // ...
 }
 {% endhighlight %}
 
-It's important to know that `IManualState.Restart` will be called right before the element gets reused, so we shouldn't use this method to unsubsribe from events or cancel actions since they'll keep happening after the element is unmounted (until is mounted again).
-
-### Styling
-A `VisualElement` can implement `INameListener`, `IClassNameListener` or `IStyleListener` to get notified anytime its styling attributes change.
+### Style Listeners
+You can react to styling changes by implementing specific listeners:
+- `INameListener`: Called when `name` changes.
+- `IClassNameListener`: Called when the class list changes.
+- `IStyleListener`: Called when inline styles change.
 
 {% highlight csharp %}
 private partial class FooElement : VisualElement, IVisualElement, INameListener, IClassNameListener, IStyleListener
 {
-    private List<Sprite> SpriteSheet { get; set; }
-
     void INameListener.DidChange(Name value) {
         Debug.Log($"The element is now called {value}.");
     }
@@ -244,3 +201,11 @@ private partial class FooElement : VisualElement, IVisualElement, INameListener,
     // ...
 }
 {% endhighlight %}
+
+## The Render Process
+When Rish renders a `VisualElement`:
+- **Sync:** It updates `name`, `className`, and `style` (in that order).
+- **Setup:** It calls `Setup(props)` (only if Props have changed).
+- **Children:** It reconciles and updates all children.
+
+Important: Layout and style updates happen asynchronously on UI Toolkit's side. If you query `resolvedStyle` (e.g., `element.resolvedStyle.width`) immediately after a render, it may not yet reflect the new values.

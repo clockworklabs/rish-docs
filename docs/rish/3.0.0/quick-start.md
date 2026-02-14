@@ -125,11 +125,11 @@ Rish automatically detects changes in **Props** or **State** and flags the eleme
 
 To achieve a Deterministic UI, treat your `Render` method as a Pure Function:
 
-<div class="alert alert-dark text-center" role="alert"><b>UI=f(State,Props)</b></div>
+$$ UI = f(Props,State) $$
 
 If you ensure your `Render` method relies _only_ on Props and State, your UI will always be predictable and in sync with your data.
 
-## The C# Advantage
+## It's Just C#
 Rish is 100% C#. There is no custom templating language or XML to learn. No weird setups to bridge different technologies stacks. You have direct access to your game data and Unity's APIs, you can use `if` statements, `for` loops, LINQ... you name it.
 
 {% highlight csharp %}
@@ -156,7 +156,7 @@ public struct ItemCardProps {
 {% endhighlight %}
 
 ## Roots
-Rish is a UI library, not a rigid or opinionated framework. We're trying to not impose anything on you and that's why it comes with virtually no elements. You have the freedom to implement your library of elements the way that better suits your needs.
+Rish is a UI library, not a rigid or opinionated framework. We're trying not to impose anything on you and that's why it comes with virtually no elements. You have the freedom to implement your library of elements the way that best suits your needs.
 
 However, if you want a head start, we have created **Roots**, a collection of ready-to-use elements built with Rish.
 

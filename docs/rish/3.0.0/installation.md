@@ -2,14 +2,12 @@
 layout: docs
 title: Installation
 sections:
-  - Installation
   - Setup
   - Next Steps
 order: 1
 icon: download
 ---
 
-## Instalation
 Installing Rish is simple. You can add the package via the Unity Package Manager using the Git URL, or by modifying your manifest.json file directly.
 
 Add the following package URL: `https://github.com/clockworklabs/rish#[target-version]`
@@ -43,7 +41,7 @@ Rish comes with a Roslyn Source Generator called **Rishenerator**. While it is t
   - Ensure the **Select platforms for plugin** list is empty (no platforms selected).
   - Add (if not present already) the `RoslynAnalyzer` label.
 
-_Note: This guide assumes Rishenerator is enabled._
+_Note: The rest of this guide assumes Rishenerator is enabled._
 
 ## Setup
 You can run multiple Rish apps simultaneously (e.g., one for Screen Space UI and another for World Space HUDs). Each app manages its own UI Toolkit tree.

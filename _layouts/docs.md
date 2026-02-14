@@ -91,6 +91,7 @@ layout: default
 <script src="/assets/plugins/simplelightbox/simple-lightbox.min.js"></script>
 <script src="/assets/plugins/gumshoe/gumshoe.polyfills.min.js"></script>
 <script src="/assets/js/docs.js"></script>
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
 
 <script defer>
 	// Get the header

@@ -2,7 +2,6 @@
 layout: docs
 title: RishElements
 sections:
-  - Virtual Tree
   - Inputs
   - DOMDescriptor
   - Wrap VisualElements
@@ -12,29 +11,35 @@ order: 4
 icon: brain
 ---
 
-## Virtual Tree
-All UI elements are added to a Virtual Tree managed by Rish. VisualElements are also added to UI Toolkit's Visual Tree. RishElements are only added to the Virtual Tree. To create a new RishElement type, you need to inherit from one of the `RishElement`s classes and implement the `Render` function. A RishElement will always have the element it returns in the `Render` function as its only child. If an element shouldn't have a child, you can return `Element.Null`.
+While `VisualElements` handle the actual rendering on screen, `RishElements` handle the logic, state, and structure of your application.
 
-At the moment, there's no way to visualize the Virtual Tree structure but we'll add editor tools in future releases.
+All UI elements are added to a **Virtual Tree** managed by Rish.
+- **VisualElements:** Exist in both the Virtual Tree and the UI Toolkit Visual Tree.
+- **RishElements:** Exist _only_ in the Virtual Tree.
+
+To create a new RishElement, you inherit from `RishElement` and implement the `Render` method. A `RishElement` always has exactly one child (the element returned by `Render`). If an element shouldn't have a child, you can return `Element.Null`.
 
 ### Types
-For practical purposes, there are three `RishElement` types:
-- `RishElement<P>`, for elements with Props of type P;
-- `RishElement<P, S>`, for elements with Props of type P and State of type S;
-- `RishElement`, for elements with no Props or State.
 
-In actuality, every RishElement has a Props type and `RishElement` inherits from `RishElement<NoProps>`.
+There are three main base classes for `RishElement`, depending on your data needs:
+- `RishElement`: For elements with no Props or State.
+- `RishElement<Props>`: For elements that receive data from parents.
+- `RishElement<Props, State>`: For elements that receive data and manage internal state.
 
-## Inputs
-Our goal is to create a deterministic UI and we think of UI elements as pure functions. The inputs of a RishElement function are its Props and State.
+_Note: Internally, every RishElement has a Props type. The base RishElement simply inherits from RishElement<NoProps>._
 
-Props come from "above": another RishElement created a definition with specific properties that are passed down. State, on the other hand, is entirely internal.
+## Inputs: Props and State
+Our goal is a **Deterministic UI**. We treat UI elements as **Pure Functions**:
 
-The Render function should only use Props and State to help guarantee that the UI remains deterministic. Every change to Props or State will always trigger the element to be re-rendered.
+$$ UI = f(Props,State) $$
 
-For some advanced elements, you may need to use some other input (other than Props and State). In those cases, you'll have to be extra cautious on how you implement the Render function and manually flag your element as dirty.
+- **Props:** Data passed down from a parent.
+- **State:** Data managed internally by the element.
 
-Props and State types must be struct value types and have the `RishValueType` attribute. The convention is to name them "[ElementName]Props" and "[ElementName]State" respectively. For example:
+The `Render` function should rely _only_ on Props and State. Every change to either will automatically trigger a re-render.
+
+### Defining Props and State
+Props and State must be `struct` types with the `[RishValueType]` attribute. The convention is to name them `[ElementName]Props` and `[ElementName]State`.
 
 {% highlight csharp %}
 public partial class Foo : RishElement<FooProps, FooState>
@@ -49,76 +54,68 @@ public struct FooProps { }
 public struct FooState { }
 {% endhighlight %}
 
-### Default Value
-To define default values for Props or State, you need to implement a static property of the same type with the `Default` attribute. Default Props values will be used for all properties that are not specified when defining an element and State will be initialized with the default values when mounting the element.
-{% highlight csharp %}
-public partial class Foo : RishElement<FooProps> { 
-    // ...
-}
+### Default Values
+To define default values, implement a static property of the same type with the `[Default]` attribute inside your struct.
+- **Props Defaults:** Used if the parent does not provide a value.
+- **State Defaults:** Used to initialize the state when the element is first mounted.
 
+{% highlight csharp %}
 [RishValueType]
 public struct FooProps {
-    public bool flag0;
-    public bool flag1;
-    public uint n;
+    public bool isVisible;
+    public int count;
 
     [Default]
     private static FooProps Default => new() {
-        flag1 = true,
-        n = 1
+        isVisible = true,
+        count = 1
     };
-}
-
-[RishValueType]
-public struct FooState {
-    public int counter; // Will start at 1
-
-    [Default]
-    private static FooState Default => new() { counter = 1 };
-}
-
-public partial class Example : RishElement { 
-    protected override Element Render() => Foo.Create(n: 3); // Will create a Foo with flag0 = false, flag1 = true and n = 3.
 }
 {% endhighlight %}
 
-## Wrap VisualElements
-It's very common for a RishElement to act as a wrapper for a VisualElement and expect the children and styling information necessary to style the VisualElement through Props. For these scenarios, you can use `DOMDescriptor`, which containes `name`, `className` and `style`. The `DOMDescriptor` attribute expands the styling attributes in the `Create` function.
+## Wrapping VisualElements
+A very common pattern is creating a `RishElement` that wraps a `VisualElement` (like a custom Card or Container) but allows the parent to style it.
+
+Instead of passing every style property manually, you can use `DOMDescriptor`. This struct contains `name`, `className`, and `style`.
 
 {% highlight csharp %}
 private partial class Example : RishElement
 {    
-    protected override Element Render() => Container.Create(
-        name: "container",
-        className: "class-name",
+    protected override Element Render() => AlertContainer.Create(
         style: new Style {
-            // ...
+            maxWidth = Length.Percent(70),
+            margin = 16
         },
-        children: Div.Create());
+        children: Col.Create(
+            children: new Children
+            {
+                H4.Create(text: "Alert title"),
+                P.Create(text: "Alert body")
+            }));
 }
 
-private partial class Container : RishElement<ContainerProps>
+private partial class AlertContainer : RishElement<AlertContainerProps>
 {    
     protected override Element Render() => Div.Create(
         name: Props.descriptor.name,
-        className: Props.descriptor.className + "another-class-name",
+        className: Props.descriptor.className + "alert",
         style: Props.descriptor.style,
         children: Props.children);
 }
 
 [RishValueType]
-public struct Container {
+public struct AlertContainer {
     [DOMDescriptor]
     public DOMDescriptor descriptor;
     public Children children;
 }
 {% endhighlight %}
 
-## Callbacks
-Rish offers many interfaces that RishElements can implement to listen for important events.
+## Lifecycle and Callbacks
+Rish provides interfaces to hook into the lifecycle of a RishElement.
 
-### Mounting and Unmounting
-A `RishElement` can implement the `IMountingListener` interface to receive callbacks for when the it gets mounted and right before it gets unmounted.
+### Mounting Events (IMountingListener)
+Implement `IMountingListener` to know when an element enters or leaves the tree.
 
 {% highlight csharp %}
 private partial class FooElement : RishElement, IMountingListener
@@ -134,13 +131,15 @@ private partial class FooElement : RishElement, IMountingListener
 }
 {% endhighlight %}
 
-For cases when your element needs some instance state (not Rish state, but actual C# instance variables or properties) that you need to restart before the element gets reused (from the pool), you can add `IManualState` listener.
+### Pooling Reset (IManualState)
+If your VisualElement holds instance state that you must reset before the element is reused, you can use `IManualState`.
 
 {% highlight csharp %}
 private partial class FooElement : RishElement, IManualState
 {
     private HashSet<int> Indices { get; } = new();
     
+    // Called right BEFORE the element is reused from the pool
     void IManualState.Restart() {
        Indices.Clear();
     }
@@ -149,12 +148,15 @@ private partial class FooElement : RishElement, IManualState
 }
 {% endhighlight %}
 
-It's important to know that `IManualState.Restart` will be called right before the element gets reused, so we shouldn't use this method to unsubsribe from events or cancel actions since they'll keep happening after the element is unmounted (until is mounted again).
+_Warning: `IManualState.Restart` will be called right before the element gets reused from the Pool. Do not use `Restart` to unsubscribe from events or cancel actions. Use `ComponentWillUnmount` for that._
 
-#### Advanced Unmounting
-Any time an element is not needed anymore, the unmounting process begins immediately. Usually this means the element will be removed from the tree instantly but sometimes we need to delay it (to play an outro animation, for example). For these cases, Rish offers the `ICustomUnmountListener` interface. This interface provides two methods: `UnmountRequested` for when the unmounting process begins and `Unmounted` for when the element is actually finally removed from the tree.
+### Delayed Unmounting
+Sometimes you need to delay removal, for example, to play an Outro Animation.
 
-If a RishElement implements this interface, Rish will call the `UnmountRequested` method and won't remove the element from the tree until `CanUnmount()` is manually called within the RishElement.
+If you implement `ICustomUnmountListener`:
+1. Rish calls `UnmountRequested()`.
+2. Rish waits and keeps the element in the tree.
+3. You must manually call `CanUnmount()` when the element is ready to be unmounted.
 
 {% highlight csharp %}
 public partial class DelaySampleElement : RishElement, IMountingListener, ICustomUnmountListener
@@ -184,15 +186,22 @@ public partial class DelaySampleElement : RishElement, IMountingListener, ICusto
 }
 {% endhighlight %}
 
-### Props
-A `RishElement` can implement the `IPropsListener` interface to receive callbacks when the Props are changing.
+### Props Listeners
+If you need to execute logic when Props change (e.g., fetching data based on an ID), implement `IPropsListener`.
+
+Rish provides three flavors:
+
+#### 1. `IPropsListener` (Basic)
+Notifies you that props have changed and will change.
 
 {% highlight csharp %}
 public partial class FooElement : RishElement<FooProps>, IPropsListener
 {
+    // Called after mounting and every time props change
     void IPropsListener.PropsDidChange() {
-        Debug.Log($"Element props changed. The id is: {Props.id}.");
+        Debug.Log($"Element props changed. The new id is: {Props.id}.");
     }
+    // Called right before changing props
     void IPropsListener.PropsWillChange() { 
         Debug.Log("Element props will change.");
     }
@@ -206,9 +215,8 @@ public struct FooProps {
 }
 {% endhighlight %}
 
-`PropsDidChange` is called after the element is mounted and Props are set for the first time and every time the element gets Dirty with different Props. `PropsWillChange` is called before the Props value changes and right before unmounting the element.
-
-We also have `IPropsListener<P>` for when we need to compare the previous Props value. It's useful to avoid doing duplicated Setup work when not needed.
+#### 2. `IPropsListener<T>` (Comparison)
+Allows you to compare previous and current props to avoid unnecessary work.
 
 {% highlight csharp %}
 public partial class FooElement : RishElement<FooProps, FooState>, IPropsListener<FooProps>
@@ -245,12 +253,13 @@ public struct FooState {
 }
 {% endhighlight %}
 
-And, lastly, we have `IAllPropsListener`, to receive callbacks every time a Props value is set, even if the element is not getting dirty by it (the Props comparison returns true).
+#### 3. `IAllPropsListener<T>` (Comparison)
+Notifies you every time props are set, even if the values are identical (and the element is not marked Dirty).
 
 ## UIToolkit Events
-At some point, one of your RishElements will likely have to listen to some event coming from UI Toolkit (to respond to pointer events, for example). To keep things simple, Rish provides an extremely similar API to the one in VisualElements.
+RishElements can listen to UI Toolkit events (like clicks or hovers) just like VisualElements.
 
-RishElements can subscribe to events with `RegisterCallback` and unsubscribe from them with `UnregisterCallback`. Rish will add the callbacks to the first VisualElement descendant.
+_**Important:** Since RishElements don't exist in the Visual Tree, Rish attaches these callbacks to the first VisualElement descendant._
 
 {% highlight csharp %}
 public partial class FooElement : RishElement<NoProps, FooState>
@@ -272,6 +281,8 @@ public struct FooState {
 }
 {% endhighlight %}
 
+
+### REVIEW
 You can also create a `ToolkitManipulator` (similar to UI Toolkit's `Manipulator`) and add it to your RishElement with `AddManipulator` and remove it with `RemoveManipulator`.
 
 {% highlight csharp %}
@@ -297,3 +308,4 @@ public partial class ClickManipulator : ToolkitManipulator
     }
 }
 {% endhighlight %}
+### REVIEW

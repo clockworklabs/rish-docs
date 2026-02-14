@@ -12,7 +12,7 @@ order: 2
 icon: arrows-turn-to-dots
 ---
 
-Rish manages the complexity of updating and rendering the UI. It handles the synchronization between the Virtual Tree and the Visual Tree, automatically pooling elements to minimize garbage collection and optimizes memory usage.
+Rish manages the complexity of updating and rendering the UI. It handles the synchronization between the Virtual Tree and the Visual Tree (automatically pooling elements to minimize garbage collection) and optimizes memory usage.
 
 ## Element Definitions
 It is important to understand the distinction between an element _instance_ and an element _definition_.
@@ -27,8 +27,8 @@ The lifecycle of an Element begins when it is "mounted" (added to the tree).
 When a `RishElement` is rendered for the first time:
 1. Rish retrieves an instance of the required type (based on the `Element` returned in the `Render` method) from the Object Pool.
 2. It mounts this instance as a child of the current parent.
-3. **If it is a `RishElement`:** Rish initializes its Props and flags it as `Dirty`. This triggers this new Element to be rendered next, continuing the cycle.
-4. **If it is a `VisualElement`:** Rish sets the styling properties (name, class, and inline style), calls `Setup` with the Props, and creates/mounts the children, continuing the cycle.
+    - **If it is a `RishElement`:** Rish initializes its Props and flags it as `Dirty`. This triggers the new Element to be rendered next, continuing the cycle.
+    - **If it is a `VisualElement`:** Rish sets the styling properties (name, class, and inline style), calls `Setup` with the Props, and creates/mounts the children, continuing the cycle.
 
 ### Unmounting
 When an element is no longer needed (e.g., due to a conditional check in your `Render` method):
