@@ -2,9 +2,10 @@
 layout: docs
 title: Quick Start
 sections:
-  - Creating and nesting elements
-  - Elements Inputs
-  - It's just C#
+  - Why Rish?
+  - Elements Composition
+  - Inputs and Data Flow
+  - It's Just C#
   - Roots
 order: 0
 icon: handshake
@@ -14,14 +15,14 @@ Welcome to **Rish**! Rish is a declarative UI library for Unity that uses **UI T
 
 If you are familiar with React or other declarative UI frameworks, you will feel right at home. Rish (loosely) follows the React paradigm: you tell the computer what to do, not how to do it.
 
-### Why Rish?
+## Why Rish?
 **Declarative:** You define the desired state of the UI, and Rish handles the updates.
 
 **Best of Both Worlds:** It combines the benefits of Immediate Mode (code-driven, logical) with Retained Mode (stateful, efficient).
 
 **Deterministic:** Implemented properly, your UI becomes a pure function of your game state. Always in sync and (hopefully 🤞) bug-free.
 
-## Creating and nesting elements
+## Elements Composition
 Rish apps are built using Elements (a piece of the UI that has it's own logic and appearence). (Note: While React calls them "Components," we stick to "Elements" to align with UI Toolkit's naming conventions).
 
 There are two distinct types of elements in Rish:

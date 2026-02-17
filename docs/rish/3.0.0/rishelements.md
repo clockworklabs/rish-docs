@@ -20,13 +20,18 @@ All UI elements are added to a **Virtual Tree** managed by Rish.
 To create a new RishElement, you inherit from `RishElement` and implement the `Render` method. A `RishElement` always has exactly one child (the element returned by `Render`). If an element shouldn't have a child, you can return `Element.Null`.
 
 ### Types
-
 There are three main base classes for `RishElement`, depending on your data needs:
+
 - `RishElement`: For elements with no Props or State.
 - `RishElement<Props>`: For elements that receive data from parents.
 - `RishElement<Props, State>`: For elements that receive data and manage internal state.
 
-_Note: Internally, every RishElement has a Props type. The base RishElement simply inherits from RishElement<NoProps>._
+<div class="callout-block callout-block-info">
+    <div class="content">
+        <h4 class="callout-title">Node</h4>
+        <p>Internally, every RishElement has a Props type. The base <code>RishElement</code> simply inherits from <code>RishElement&lt;NoProps&gt;</code>.</p>
+    </div>
+</div>
 
 ## Inputs: Props and State
 Our goal is a **Deterministic UI**. We treat UI elements as **Pure Functions**:
@@ -148,7 +153,12 @@ private partial class FooElement : RishElement, IManualState
 }
 {% endhighlight %}
 
-_Warning: `IManualState.Restart` will be called right before the element gets reused from the Pool. Do not use `Restart` to unsubscribe from events or cancel actions. Use `ComponentWillUnmount` for that._
+<div class="callout-block callout-block-warning">
+    <div class="content">
+        <h4 class="callout-title">Warning</h4>
+        <p><code>IManualState.Restart</code> will be called right before the element gets reused from the Pool. Do not use <code>Restart</code> to unsubscribe from events or cancel actions. Use <code>ComponentWillUnmount</code> for that.</p>
+    </div>
+</div>
 
 ### Delayed Unmounting
 Sometimes you need to delay removal, for example, to play an Outro Animation.
@@ -259,7 +269,12 @@ Notifies you every time props are set, even if the values are identical (and the
 ## UIToolkit Events
 RishElements can listen to UI Toolkit events (like clicks or hovers) just like VisualElements.
 
-_**Important:** Since RishElements don't exist in the Visual Tree, Rish attaches these callbacks to the first VisualElement descendant._
+<div class="callout-block callout-block-info">
+    <div class="content">
+        <h4 class="callout-title">Important</h4>
+        <p>Since RishElements don't exist in the Visual Tree, Rish attaches these callbacks to the first VisualElement descendant.</p>
+    </div>
+</div>
 
 {% highlight csharp %}
 public partial class FooElement : RishElement<NoProps, FooState>
@@ -280,7 +295,6 @@ public struct FooState {
     public bool hovered;
 }
 {% endhighlight %}
-
 
 ### REVIEW
 You can also create a `ToolkitManipulator` (similar to UI Toolkit's `Manipulator`) and add it to your RishElement with `AddManipulator` and remove it with `RemoveManipulator`.

@@ -25,9 +25,9 @@ Rish comes with a Roslyn Source Generator called **Rishenerator**. While it is t
     <div class="content">
         <h4 class="callout-title"><i class="fa-solid fa-circle-info"></i>Why use Rishenerator?</h4>
         <ul>
-            <li><b>Drastically reduces development time</b> by automating boilerplate.</li>
-            <li><b>Eliminates errors</b> associated with manual implementation.</li>
-            <li><b>Optimizes performance</b> and memory efficiency automatically.</li>
+            <li><strong>Drastically reduces development time</strong> by automating boilerplate.</li>
+            <li><strong>Eliminates errors</strong> associated with manual implementation.</li>
+            <li><strong>Optimizes performance</strong> and memory efficiency automatically.</li>
         </ul>
     </div>
 </div>
@@ -41,15 +41,16 @@ Rish comes with a Roslyn Source Generator called **Rishenerator**. While it is t
   - Ensure the **Select platforms for plugin** list is empty (no platforms selected).
   - Add (if not present already) the `RoslynAnalyzer` label.
 
-_Note: The rest of this guide assumes Rishenerator is enabled._
+<div class="alert alert-warning" role="alert">
+    The rest of this guide assumes Rishenerator is enabled.
+</div>
 
 ## Setup
 You can run multiple Rish apps simultaneously (e.g., one for Screen Space UI and another for World Space HUDs). Each app manages its own UI Toolkit tree.
 
 To set up a Rish App in your scene:
 1. Create an empty **GameObject** (e.g., named "UI_Root").
-2. Add the `RishRoot` component to it.
-  - _Note: This will automatically add a UIDocument component if one is missing._
+2. Add the `RishRoot` component to it. This will automatically add a `UIDocument` component if one is missing.
 3. Assign your **Panel Settings** to the `UIDocument`.
 4. Create a class that implements `IApp` and assign it to the `RishRoot`.
 

@@ -20,7 +20,12 @@ Rish automatically pools all reference types it handles.
 - **Allocation:** When a new instance is needed, Rish retrieves one from a pre-allocated pool.
 - **Deallocation:** When an instance is no longer needed (e.g., an element is unmounted), Rish automatically returns it to the pool.
 
-_Crucial Rule: You should never call a constructor for a UI Element (or any type managed by Rish) directly. Always use the static `Create` methods. This ensures the element is correctly retrieved from the pool and tracked by Rish._
+<div class="callout-block callout-block-danger">
+    <div class="content">
+        <h4 class="callout-title">Crucial</h4>
+        <p>You should <strong>never</strong> call a constructor for a UI Element (or any reference type managed by Rish) directly. Always use the static <code>Create</code> methods. This ensures the element is correctly retrieved from the pool and tracked by Rish.</p>
+    </div>
+</div>
 
 ## The Pointer System
 To efficiently handle these pooled resources without exposing the heavy reference types to the user, Rish uses a **Pointer System**.
@@ -122,4 +127,6 @@ To create a custom pooled type:
 
 Once implemented, Rish will automatically pool instances of your class and allow you to use them safely within Managed Contexts, just like native Rish types.
 
-_A more in depth guide coming soon._
+<div class="alert alert-info" role="alert">
+    A more in depth guide coming soon.
+</div>

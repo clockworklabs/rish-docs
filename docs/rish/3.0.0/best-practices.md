@@ -438,7 +438,8 @@ public partial class NestedElementsExample : RishElement
 
 More complex Elements are defined in separate files.
 
-_File 1_
+<figure>
+    <figcaption>File 1</figcaption>
 {% highlight csharp %}
 public partial class NestedElementsExample : RishElement<NestedElementsExampleProps>
 {
@@ -455,8 +456,10 @@ public struct NestedElementsExampleProps {
     // ...
 }
 {% endhighlight %}
+</figure>
 
-_File 2_
+<figure>
+    <figcaption>File 2</figcaption>
 {% highlight csharp %}
 public partial class NestedElementsExample
 {
@@ -483,6 +486,7 @@ public partial class NestedElementsExample
     }
 }
 {% endhighlight %}
+</figure>
 
 ### Readability
 To maintain readability in declarative code, we enforce specific line-break rules.

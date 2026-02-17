@@ -145,7 +145,9 @@ To handle user input (clicks, hovers, drags) correctly, Rish needs to know if a 
 - `RectPickingManager`: Returns true for any point inside the element's layout rectangle. (Standard behavior).
 - `DiscardPickingManager`: Always returns false. Use this for elements that should be "invisible" to the mouse (pass-through).
 
-_Future versions of Rish will include PickingManagers that support rounded corners and transparency checks._
+<div class="alert alert-info" role="alert">
+    Future versions of Rish will include PickingManagers that support rounded corners and transparency checks.
+</div>
 
 ## Lifecycle and Callbacks
 Rish provides interfaces to hook into the lifecycle of a `VisualElement`.
@@ -208,4 +210,9 @@ When Rish renders a `VisualElement`:
 - **Setup:** It calls `Setup(props)` (only if Props have changed).
 - **Children:** It reconciles and updates all children.
 
-Important: Layout and style updates happen asynchronously on UI Toolkit's side. If you query `resolvedStyle` (e.g., `element.resolvedStyle.width`) immediately after a render, it may not yet reflect the new values.
+<div class="callout-block callout-block-danger">
+    <div class="content">
+        <h4 class="callout-title">Important</h4>
+        <p>Layout and style updates happen asynchronously on UI Toolkit's side. If you query <code>resolvedStyle</code> (e.g., <code>element.resolvedStyle.width</code>) immediately after a render, it may not yet reflect the new values.</p>
+    </div>
+</div>

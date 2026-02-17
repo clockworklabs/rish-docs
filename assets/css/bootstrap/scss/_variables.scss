@@ -735,15 +735,17 @@ $table-cell-padding-x-sm:     .25rem !default;
 
 $table-cell-vertical-align:   top !default;
 
-$table-color:                 var(--#{$prefix}emphasis-color) !default;
-$table-bg:                    var(--#{$prefix}body-bg) !default;
+$table-color:                 $theme-text-color-primary !default;
+// $table-bg:                    lighten($theme-code-bg-color, 15%) !default;
+$table-bg:                    $theme-code-bg-color !default;
 $table-accent-bg:             transparent !default;
 
 $table-th-font-weight:        null !default;
 
 $table-striped-color:         $table-color !default;
-$table-striped-bg-factor:     .05 !default;
-$table-striped-bg:            rgba(var(--#{$prefix}emphasis-color-rgb), $table-striped-bg-factor) !default;
+$table-striped-bg-factor:     0 !default;
+// $table-striped-bg:            darken($theme-code-bg-color, 100%) !default;
+$table-striped-bg:            $theme-code-bg-color !default;
 
 $table-active-color:          $table-color !default;
 $table-active-bg-factor:      .1 !default;
@@ -755,7 +757,7 @@ $table-hover-bg:              rgba(var(--#{$prefix}emphasis-color-rgb), $table-h
 
 $table-border-factor:         .2 !default;
 $table-border-width:          var(--#{$prefix}border-width) !default;
-$table-border-color:          var(--#{$prefix}border-color) !default;
+$table-border-color:          darken($theme-code-bg-color, 15%) !default;
 
 $table-striped-order:         odd !default;
 $table-striped-columns-order: even !default;
@@ -1546,8 +1548,8 @@ $modal-scale-transform:             scale(1.02) !default;
 // Define alert colors, border radius, and padding.
 
 // scss-docs-start alert-variables
-$alert-padding-y:               $spacer !default;
-$alert-padding-x:               $spacer !default;
+$alert-padding-y:               $spacer * 0.5 !default;
+$alert-padding-x:               $spacer * 0.5 !default;
 $alert-margin-bottom:           1rem !default;
 $alert-border-radius:           var(--#{$prefix}border-radius) !default;
 $alert-link-font-weight:        $font-weight-bold !default;
