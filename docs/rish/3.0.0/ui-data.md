@@ -8,7 +8,7 @@ order: 5
 icon: database
 ---
 
-In Rish, **UI is a pure function of data**. To guarantee a deterministic UI, Rish needs to know exactly when data changes.
+In Rish, UI is a **pure function of data**. To guarantee a deterministic UI, Rish needs to know exactly when data changes.
 
 ## Value Types
 We strictly enforce using **Value Types (structs)** for Props and State.
@@ -19,7 +19,7 @@ We strictly enforce using **Value Types (structs)** for Props and State.
 Rish provides some useful optimized value types like `Element`, `Children` and `RishList`.
 
 ### The `[RishValueType]` Attribute
-Adding `[RishValueType]` to your struct definitions, triggers Rishenerator to auto-generate high-performance code for memory management and _crucially_ Equality Comparisons.
+Adding `[RishValueType]` to your struct definitions triggers Rishenerator to auto-generate high-performance code for memory management and, _crucially_, Equality Comparisons.
 
 Every Props and State struct must be flagged with `[RishValueType]`.
 
@@ -28,7 +28,6 @@ When defining your data structures:
 - **Fields:** Use public fields for raw data.
 - **Properties:** Use properties for _inferred_ data (calculated from fields).
 - **Methods:** Use methods for more expensive calculations (>O(1)).
-- avoid reference types as much as possible (to help guarantee UI determinism).
 
 {% highlight csharp %}
 [RishValueType]
@@ -138,7 +137,7 @@ While we discourage using reference types in Props/State, you often need to inte
 **The Solution:** Do not put the mutable object itself in Props. Instead, subscribe to changes and copy the relevant data into your State.
 
 {% highlight csharp %}
-public partial class InventoryPocketTitle : RishElement, IMountingListener, IPropsListener {
+public partial class InventoryPocket : RishElement<InventoryPocketProps, InventoryPocketState>, IMountingListener, IPropsListener {
     void IMountingListener.ComponentDidMount() {
         GameState.PlayerInventory.OnChange += Setup;
     }
