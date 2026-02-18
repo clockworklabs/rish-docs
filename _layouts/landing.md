@@ -13,14 +13,11 @@ layout: default
 </div><!--//page-header-->
 <div class="page-content">
     <div class="docs-overview container py-5 justify-content-center">
-        {% assign pages = site.pages | sort: "order" %}
-        {% for page in pages %}
-            {% if page.feature %}
+        {% for feature in site.features %}
             <div class="feature-highlight d-flex flex-column">
-                <h2>{{ page.title }}</h2>
-                {{ page.content }}
+                <h2>{{ feature.title }}</h2>
+                {{ feature.content }}
             </div>
-            {% endif %}
         {% endfor %}
     </div>
 </div><!--//page-content-->

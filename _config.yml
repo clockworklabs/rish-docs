@@ -8,6 +8,18 @@ baseurl: "" # the subpath of your site, e.g. /blog
 url: "http://rish.io" # the base hostname & protocol for your site, e.g. http://example.com
 
 permalink: pretty
+# permalink: /:slug
+
+collections:
+  features:
+    output: false
+  docs:
+    output: true
+    permalink: /docs/:categories/:title
+  auto_docs:
+    output: true
+    permalink: /docs/:categories/:title
+
 
 # Build settings
 plugins:
@@ -36,3 +48,37 @@ roots-versions:
 
 rish-roots-pairs:
   "3.0.0": "1.0.0"
+
+defaults:
+  - scope:
+      path: ""
+      type: docs
+    values:
+      layout: docs
+  - scope:
+      path: ""
+      type: auto_docs
+    values:
+      layout: docs
+  - scope:
+      path: "_auto_docs/rish"
+    values:
+      categories:
+        - "rish"
+  - scope:
+      path: "_auto_docs/roots"
+    values:
+      categories:
+        - "roots"
+  - scope:
+      path: "_docs/rish/3.0.0"
+    values:
+      categories:
+        - "rish"
+        - "3.0.0"
+  - scope:
+      path: "_docs/roots/1.0.0"
+    values:
+      categories:
+        - "roots"
+        - "1.0.0"
