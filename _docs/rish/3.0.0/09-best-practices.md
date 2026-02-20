@@ -438,7 +438,7 @@ public partial class NestedElementsExample : RishElement
 More complex Elements are defined in separate files.
 
 <figure>
-    <figcaption>File 1</figcaption>
+    <figcaption>NestedElementsExample.cs</figcaption>
 {% highlight csharp %}
 public partial class NestedElementsExample : RishElement<NestedElementsExampleProps>
 {
@@ -458,7 +458,7 @@ public struct NestedElementsExampleProps {
 </figure>
 
 <figure>
-    <figcaption>File 2</figcaption>
+    <figcaption>Nested.cs</figcaption>
 {% highlight csharp %}
 public partial class NestedElementsExample
 {

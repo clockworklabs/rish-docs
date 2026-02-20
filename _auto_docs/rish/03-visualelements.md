@@ -68,7 +68,7 @@ protected override Element Render() => Div.Create(
 <div class="callout-block callout-block-warning">
     <div class="content">
         <h4 class="callout-title"><i class="fa-solid fa-circle-info"></i>Best Practice</h4>
-        <p>Favor <strong>USS stylesheets</strong> (via <code>className</code>) over inline styles. Unity optimizes stylesheets better (and supports live reloading of USS assets) and it keeps your style and layout logic separate from your code.</p>
+        <p>Favor <strong>USS style sheets</strong> (via <code>className</code>) over inline styles. Unity optimizes style sheets better (and supports live reloading of USS assets) and it keeps your style and layout logic separate from your code.</p>
         <p>Use <strong>Inline Styles</strong> only when the style depends on dynamic data from Props or State.</p>
     </div>
 </div>

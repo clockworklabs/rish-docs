@@ -256,6 +256,7 @@
 
 
 .docs-article {
+	min-height: 100vh;
 	padding: 2rem;
 	color: $theme-text-color-primary;
 	scroll-margin-top: 69px; //height of the sticky header
@@ -464,7 +465,8 @@ figure {
 	figcaption {
 		font-style: italic;
 		font-size: 0.85rem;
-		color: rgba(darken($theme-bg, 10%), 0.9);
+		// color: rgba(darken($theme-bg, 10%), 0.9);
+		opacity: 0.35;
 		font-family: monospace;
 	}
 }

@@ -2,7 +2,19 @@
 title: Quick Start
 slug: quick-start
 sections:
+  - Why Roots?
 icon: handshake
 ---
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque finibus condimentum nisl id vulputate. Praesent aliquet varius eros interdum suscipit. Donec eu purus sed nibh convallis bibendum quis vitae turpis. Duis vestibulum diam lorem, vitae dapibus nibh facilisis a. Fusce in malesuada odio.
+Roots is a UI toolkit built on top of [Rish](/docs/rish/quick-start). Rish is very thin and provides no elements out of the box. Roots is a great foundation for your UI app.
+
+## Setup
+
+
+
+
+It provides 
+- Unity Components to structure and setup your Rish App.
+- Low-level abstract elements.
+- High-level reference or starting-point elements.
+

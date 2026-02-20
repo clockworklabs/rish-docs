@@ -113,4 +113,4 @@ public partial class App : IApp
 {% endhighlight %}
 
 ## Next Steps
-Now that you have the library installed, we recommend installing [**Roots**](/docs/roots/1.0.0/quick-start) and importing its samples to see working code in action.
+Now that you have the library installed, we recommend installing [**Roots**](/docs/roots/quick-start) and importing its samples to see working code in action.

@@ -7,7 +7,7 @@ layout: default
         <h1 class="page-heading single-col-max mx-auto">R<span id="feature-text" class="text-alt"></span>ish</h1>
         <div class="page-intro single-col-max mx-auto">Declarative, element-based UI library for Unity.</div>
         <div class="single-col-max mx-auto mt-5">
-            <a href="{{ "/docs/rish/" | append: site.rish-versions[0] | append: "/quick-start" }}" class="btn btn-light btn-sm">Learn Rish</a>
+            <a href="/docs/rish/quick-start" class="btn btn-light btn-sm">Learn Rish</a>
         </div>
     </div>
 </div><!--//page-header-->

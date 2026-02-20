@@ -161,4 +161,4 @@ Rish is a UI library, not a rigid or opinionated framework. We're trying not to 
 
 However, if you want a head start, we have created **Roots**, a collection of ready-to-use elements built with Rish.
 
-[Check out the Roots documentantion](/docs/roots/1.0.0/quick-start)
+[Check out the Roots documentantion](/docs/roots/quick-start)

@@ -7,9 +7,9 @@ sections:
 icon: download
 ---
 
-Installing Rish is simple. You can add the package via the Unity Package Manager using the Git URL, or by modifying your manifest.json file directly.
+Installing Rish is simple. You can add the package via the Unity Package Manager using the Git URL, or by modifying your `manifest.json` file directly.
 
-Add the following package URL: `https://github.com/clockworklabs/rish#[target-version]`
+Add the following package URL: `https://github.com/clockworklabs/rish#[target-version]`.
 
 #### Dependencies
 Rish requires the following dependencies to function correctly:
@@ -52,6 +52,7 @@ To set up a Rish App in your scene:
 2. Add the `RishRoot` component to it. This will automatically add a `UIDocument` component if one is missing.
 3. Assign your **Panel Settings** to the `UIDocument`.
 4. Create a class that implements `IApp` and assign it to the `RishRoot`.
+5. Assign all the USS style sheets your app will need to the `RishRoot`. 
 
 ### Defining an App
 A Rish App is the entry point for your UI. It is not an Element itself; rather, it defines the root element for the entire tree.
@@ -113,4 +114,4 @@ public partial class App : IApp
 {% endhighlight %}
 
 ## Next Steps
-Now that you have the library installed, we recommend installing [**Roots**](/docs/roots/1.0.0/quick-start) and importing its samples to see working code in action.
+Now that you have the library installed, we recommend installing [**Roots**](/docs/roots/quick-start) and importing its samples to see working code in action.
