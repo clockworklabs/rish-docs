@@ -2,41 +2,39 @@
 title: Layouting
 slug: layouting
 sections:
-    - Stack
+    - Linear Layouts
     - Responsive Layouts
 icon: table-columns
 ---
 
-## Stack
-The `Stack` element is a foundational layout RishElement. It acts as a generic container, wrapping around the elements to be arranged.
+## Linear Layouts
+The `Stack` element is a foundational layout RishElement. It acts as a generic container that arranges elements in a single direction.
 
 ### Props
-- `Stack.Direction direction`: The direction of the stack. `Vertical` by default.
-- `bool reverse`: Whether or not the children should be arranged in reversed order.
-- `float gap`: Gap in pixels between children.
+- `Stack.Direction direction`: `Vertical` (default) or `Horizontal`.
+- `bool reverse`: If true, children are arranged in reverse order.
+- `float gap`: Pixel spacing between children.
+- `Element separator`: An element (like a divider) rendered between each child.
 - `DOMDescriptor descriptor`: Styling information. Expanded in `Create` method.
-- `Children children`: All children to be arranged.
-- `Element separator`: A separator to be added in between children.
+- `Children children`: The elements to be arranged.
 
 ### Col and Row
-Roots provides two wrappers to skip passing down the direction.
-- `Col` creates a `Stack` with Vertical direction.
-- `Row` creates a `Stack` with Horizontal direction.
-
-`Stacks` (`Col` and `Row`) might be all you need 90% of the time, but Roots provides more advanced and powerful options too.
+To keep code clean, Roots provides two wrappers that pre-set the direction:
+- `Col`: A `Stack` with `Vertical` direction.
+- `Row`: A `Stack` with `Horizontal` direction.
 
 ## Responsive Layouts
-### Breakpoints
-Breakpoints are customizable widths that determine how your responsive layout behaves. They are the building blocks of responsive design.
+While `Stacks` may cover 90% of use cases, Roots includes a responsive system inspired by modern web frameworks.
 
-There are six breakpoints that you can set via `ResponsiveContext` Props.
+### Breakpoints
+Breakpoints are width thresholds that define layout behavior. Roots uses six standard tiers:
 
 <div class="table-responsive my-4">
     <table class="table table-striped">
         <thead>
             <tr>
                 <th scope="col">Breakpoint</th>
-                <th scope="col">Short Name</th>
+                <th scope="col">Key</th>
                 <th scope="col">Default Min Width</th>
             </tr>
         </thead>
@@ -75,22 +73,17 @@ There are six breakpoints that you can set via `ResponsiveContext` Props.
     </table>
 </div>
 
-The default ratio between breakpoints is `4/3`. This means that if you set `md` to 900, `lg` will be 1200 (`900 * 4 / 3`), `xl` will be 1600 (`1200 * 4 / 3`) and `xxl` will be 2133 (`floor(1600 * 4 / 3)`). This behavior guarantess that breakpoints "make sense" between each other.
-
-If you want breakpoints to be different than the default values, we recommend:
-- Only setting `sm` and let the system use the default `4/3` ratio.
-- If you want a different ratio between breakpoints, setting _all_ breakpoints. 
-
-### Responsive Context
-A `ResponsiveContext` is the root of all responsive layouts. It is a container that will report a breakpoint based on its width and children elements will layout things accordingly.
-
 <div class="callout-block callout-block-info">
     <div class="content">
-        <h4 class="callout-title"><i class="fa-solid fa-circle-info"></i>Note</h4>
-        <p>Responsive layouts will react to parent <code>ResponsiveContexts</code>, not to the app window size. This is a feature. You can have multiple <code>ResponsiveContexts</code> in your app (e.g. multiple resizable windows or viewports) and your elements will react and layout independently of each other.</p>
-        <p>If you want your layouts to react to the app size, you can simply create one <code>ResponsiveContext</code> at the top level of your UI hierarchy.</p>
+        <h4 class="callout-title"><i class="fa-solid fa-circle-info"></i>The 4/3 Rule</h4>
+        <p>By default, Roots calculates breakpoints using a 4/3 ratio. If you define <code>sm</code>, the system will automatically calculate the other breakpoints. If you need custom ratios, define all breakpoints manually.</p>
     </div>
 </div>
+
+### Responsive Context
+A `ResponsiveContext` is the root of all responsive layouts. Elements react to their parent `ResponsiveContext`.
+
+You can have multiple `ResponsiveContexts` (e.g. resizable windows, viewports) and elements inside them will adapt to the specific width of each `ResponsiveContext` independently.
 
 You define your responsive breakpoints through `ResponsiveContext`'s Props.
 
@@ -106,12 +99,8 @@ You define your responsive breakpoints through `ResponsiveContext`'s Props.
 
 ### Containers
 Containers are the most basic responsive layout element. They are used to contain, pad, and (sometimes) center the content within them.
-
-Getting inspiration from Bootstrap, there are 2 types of Container elements:
-- `Container`: It is 100% wide (`width: 100%`) until the specified breakpoint is reached, after which we apply `max-widths` for each of the higher breakpoints. Equivalent to `.container-{breakpoint}` in Bootstrap.
-- `FluidContainer`: Full width container (`width: 100%`), spanning the entire width of the viewport. Equivalent to `.fluid-container` in Bootstrap.
-
-If `Container`'s breakpoint is `ExtraSmall` (the default value), it's equivalent to `.container` in Bootstrap and it behaves the same to `Small` breakpoint.
+- `Container`: Stays 100% wide until its specific breakpoint is hit, then applies a `max-width`. Equivalent to `.container-{breakpoint}` in Bootstrap.
+- `FluidContainer`: Always spans 100% of the available width. Equivalent to `.fluid-container` in Bootstrap.
 
 The table below illustrates how each container compares to each other at each breakpoint (assuming default breakpoint values).
 
@@ -121,32 +110,32 @@ The table below illustrates how each container compares to each other at each br
             <tr>
                 <th scope="col"></th>
                 <th scope="col">
-                    Extra Small
+                    xs (≥ 0)
                     <br>
                     <small class="font-monospace opacity-25">width / max-width</small>
                 </th>
                 <th scope="col">
-                    Small
+                    sm (≥ 576)
                     <br>
                     <small class="font-monospace opacity-25">width / max-width</small>
                 </th>
                 <th scope="col">
-                    Medium
+                    md (≥ 768)
                     <br>
                     <small class="font-monospace opacity-25">width / max-width</small>
                 </th>
                 <th scope="col">
-                    Large
+                    lg (≥ 1024)
                     <br>
                     <small class="font-monospace opacity-25">width / max-width</small>
                 </th>
                 <th scope="col">
-                    Extra Large
+                    xl (≥ 1365)
                     <br>
                     <small class="font-monospace opacity-25">width / max-width</small>
                 </th>
                 <th scope="col">
-                    Extra Extra Large
+                    xxl (≥ 1820)
                     <br>
                     <small class="font-monospace opacity-25">width / max-width</small>
                 </th>
@@ -247,9 +236,56 @@ The table below illustrates how each container compares to each other at each br
 </div>
 
 #### `Container` Props
-
+- `ResponsiveBreakpoint breakpoint`: Breakpoint.
+- `DOMDescriptor descriptor`: Styling information. Expanded in `Create` method.
+- `Element content`: Container's content.
 
 #### `FluidContainer` Props
+- `DOMDescriptor descriptor`: Styling information. Expanded in `Create` method.
+- `Element content`: Container's content.
 
+### Grid
+Roots provides a powerful responsive grid system for complex layouts. If you're familiar with Bootstrap's (or other similar CSS responsive frameworks) Grid, you will find Roots' solution familiar. Although it has some key big differences.
 
+It uses a Mobile-First Inheritance model: settings for `xs` flow up to `xxl`.
 
+#### How it works
+A `Grid` defines how many units wide it is per breakpoint. Grid sizes are inherited from lower breakpoints.
+
+If columns exceed the Grid's unit count, they wrap to a new line. If no grid size is set, the Grid automatically fits all columns into one row.
+
+Columns and rows are separated by a gutter. Grid gutters are also inherited from lower breakpoints.
+
+#### Props
+- `int? xs`: Grid size to use in Extra Small `ResponsiveContexts`. If not set, the grid will set the size to fit all `cols` in one row. 
+- `int? sm`: Grid size in Small `ResponsiveContexts`. If not set, it inherits `xs` value.
+- `int? md`: Grid size in Medium `ResponsiveContexts`. If not set, it inherits `sm` value.
+- `int? lg`: Grid size in Large `ResponsiveContexts`. If not set, it inherits `md` value.
+- `int? xl`: Grid size in Extra Large `ResponsiveContexts`. If not set, it inherits `lg` value.
+- `int? xxl`: Grid size in Extra Extra Large `ResponsiveContexts`. If not set, it inherits `xl` value.
+- `Gutter? xsGutter`: Gutter to use in Extra Small `ResponsiveContexts`. If not set, it's 0 by default. 
+- `Gutter? smGutter`: Gutter to use in Small `ResponsiveContexts`. If not set, it inherits `xs` value.
+- `Gutter? mdGutter`: Gutter to use in Medium `ResponsiveContexts`. If not set, it inherits `sm` value.
+- `Gutter? lgGutter`: Gutter to use in Large `ResponsiveContexts`. If not set, it inherits `md` value.
+- `Gutter? xlGutter`: Gutter to use in Extra Large `ResponsiveContexts`. If not set, it inherits `lg` value.
+- `Gutter? xxlGutter`: Gutter to use in Extra Extra Large `ResponsiveContexts`. If not set, it inherits `xl` value.
+- `DOMDescriptor descriptor`: Styling information. Expanded in `Create` method.
+- `RishList<ColData> cols`: Columns data.
+
+#### `ColData`
+Each column has a size in Grid Units per breakpoint. Column sizes are inherited from lower breakpoints.
+
+If no column size is set, then it's assumed to be 1. A size of 0 is valid, which is useful when you need to hide a column only in certain breakpoints.
+
+Children in a column will be separated by the `Grid`'s vertical gutter.
+
+- `int? xs`: Column size (in Grid Units) in Extra Small `ResponsiveContexts`. If not set, it's assumed to be 1.
+- `int? sm`: Column size (in Grid Units) in Small `ResponsiveContexts`. If not set, it inherits `xs` value.
+- `int? md`: Column size (in Grid Units) in Medium `ResponsiveContexts`. If not set, it inherits `sm` value.
+- `int? lg`: Column size (in Grid Units) in Large `ResponsiveContexts`. If not set, it inherits `md` value.
+- `int? xl`: Column size (in Grid Units) in Extra Large `ResponsiveContexts`. If not set, it inherits `lg` value.
+- `int? xxl`: Column size (in Grid Units) in Extra Extra Large `ResponsiveContexts`. If not set, it inherits `xl` value.
+- `DOMDescriptor descriptor`: Styling information.
+- `Children children`: Children.
+
+#### Examples
