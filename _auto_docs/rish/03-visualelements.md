@@ -155,10 +155,10 @@ Rish provides interfaces to hook into the lifecycle of a `VisualElement`.
 Useful for initialization logic or event subscription.
 
 {% highlight csharp %}
-void IMountingListener.ComponentDidMount() {
+void IMountingListener.ElementDidMount() {
     Debug.Log("Element added to the Visual Tree");
 }
-void IMountingListener.ComponentWillUnmount() { 
+void IMountingListener.ElementWillUnmount() { 
     Debug.Log("Element about to be removed");
 }
 {% endhighlight %}

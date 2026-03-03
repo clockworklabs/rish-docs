@@ -137,10 +137,10 @@ While we discourage using reference types in Props/State, you often need to inte
 
 {% highlight csharp %}
 public partial class InventoryPocket : RishElement<InventoryPocketProps, InventoryPocketState>, IMountingListener, IPropsListener {
-    void IMountingListener.ComponentDidMount() {
+    void IMountingListener.ElementDidMount() {
         GameState.PlayerInventory.OnChange += Setup;
     }
-    void IMountingListener.ComponentWillUnmount() {
+    void IMountingListener.ElementWillUnmount() {
         GameState.PlayerInventory.OnChange -= Setup;
     }
 

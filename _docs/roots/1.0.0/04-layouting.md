@@ -15,7 +15,7 @@ The `Stack` element is a foundational layout RishElement. It acts as a generic c
 - `bool reverse`: If true, children are arranged in reverse order.
 - `float gap`: Pixel spacing between children.
 - `Element separator`: An element (like a divider) rendered between each child.
-- `DOMDescriptor descriptor`: Styling information. Expanded in `Create` method.
+- `VisualAttributes descriptor`: Styling information. Expanded in `Create` method.
 - `Children children`: The elements to be arranged.
 
 ### Col and Row
@@ -24,7 +24,7 @@ To keep code clean, Roots provides two wrappers that pre-set the direction:
 - `Row`: A `Stack` with `Horizontal` direction.
 
 ## Responsive Layouts
-While `Stacks` may cover 90% of use cases, Roots includes a responsive system inspired by modern web frameworks.
+While `Stacks` may cover 90% of use cases, Roots also includes a responsive system inspired by modern web frameworks.
 
 ### Breakpoints
 Breakpoints are width thresholds that define layout behavior. Roots uses six standard tiers:
@@ -93,7 +93,7 @@ You define your responsive breakpoints through `ResponsiveContext`'s Props.
 - `int lg`: Min width for Large breakpoint.
 - `int xl`: Min width for Extra Large breakpoint.
 - `int xxl`: Min width for Extra Extra Large breakpoint.
-- `DOMDescriptor descriptor`: Styling information. Expanded in `Create` method.
+- `VisualAttributes descriptor`: Styling information. Expanded in `Create` method.
 - `Children children`: Container's children.
 - `Action<float, ResponsiveBreakpoint> onResize`: Callback that gets called when the container gets resized.
 
@@ -237,15 +237,15 @@ The table below illustrates how each container compares to each other at each br
 
 #### `Container` Props
 - `ResponsiveBreakpoint breakpoint`: Breakpoint.
-- `DOMDescriptor descriptor`: Styling information. Expanded in `Create` method.
+- `VisualAttributes descriptor`: Styling information. Expanded in `Create` method.
 - `Element content`: Container's content.
 
 #### `FluidContainer` Props
-- `DOMDescriptor descriptor`: Styling information. Expanded in `Create` method.
+- `VisualAttributes descriptor`: Styling information. Expanded in `Create` method.
 - `Element content`: Container's content.
 
 ### Grid
-Roots provides a powerful responsive grid system for complex layouts. If you're familiar with Bootstrap's (or other similar CSS responsive frameworks) Grid, you will find Roots' solution familiar. Although it has some key big differences.
+Roots provides a powerful responsive grid system for complex layouts. If you're familiar with Bootstrap's (or other similar CSS responsive frameworks) Grid, you will find Roots' solution familiar. Although it has some key differences.
 
 It uses a Mobile-First Inheritance model: settings for `xs` flow up to `xxl`.
 
@@ -269,7 +269,7 @@ Columns and rows are separated by a gutter. Grid gutters are also inherited from
 - `Gutter? lgGutter`: Gutter to use in Large `ResponsiveContexts`. If not set, it inherits `md` value.
 - `Gutter? xlGutter`: Gutter to use in Extra Large `ResponsiveContexts`. If not set, it inherits `lg` value.
 - `Gutter? xxlGutter`: Gutter to use in Extra Extra Large `ResponsiveContexts`. If not set, it inherits `xl` value.
-- `DOMDescriptor descriptor`: Styling information. Expanded in `Create` method.
+- `VisualAttributes descriptor`: Styling information. Expanded in `Create` method.
 - `RishList<ColData> cols`: Columns data.
 
 #### `ColData`
@@ -285,7 +285,7 @@ Children in a column will be separated by the `Grid`'s vertical gutter.
 - `int? lg`: Column size (in Grid Units) in Large `ResponsiveContexts`. If not set, it inherits `md` value.
 - `int? xl`: Column size (in Grid Units) in Extra Large `ResponsiveContexts`. If not set, it inherits `lg` value.
 - `int? xxl`: Column size (in Grid Units) in Extra Extra Large `ResponsiveContexts`. If not set, it inherits `xl` value.
-- `DOMDescriptor descriptor`: Styling information.
+- `VisualAttributes descriptor`: Styling information.
 - `Children children`: Children.
 
 #### Examples

@@ -122,7 +122,7 @@ You can leverage Rish's high-performance pooling system for your own data struct
 
 To create a custom pooled type:
 1. **The Reference:** Create a class that implements `IManaged` (must have a parameterless constructor).
-2. **The Pointer:** Create a struct that implements `IReference`.
+2. **The Pointer:** Create a struct that implements `IPointer`.
 
 Once implemented, Rish will automatically pool instances of your class and allow you to use them safely within Managed Contexts, just like native Rish types.
 

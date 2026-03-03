@@ -80,7 +80,7 @@ public partial class App : IApp
     // The internal Root element manages the application state
     private partial class Root : RishElement<NoProps, RootState>, IMountingListener
     {
-        void IMountingListener.ComponentDidMount() {
+        void IMountingListener.ElementDidMount() {
             if(StaticData.IsLoaded)
             {
                 // If data is already ready, set progress immediately
@@ -91,7 +91,7 @@ public partial class App : IApp
                 StaticData.OnLoadingProgress += SetLoadingProgress;
             }
         }
-        void IMountingListener.ComponentWillUnmount() {
+        void IMountingListener.ElementWillUnmount() {
             StaticData.OnLoadingProgress -= SetLoadingProgress;
         }
 

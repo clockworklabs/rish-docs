@@ -19,10 +19,10 @@ Roots is a UI toolkit built on top of [Rish](/docs/rish/quick-start). Rish is ve
 - **Utilities:** Helper classes and methods to streamline development.
 - **High-level Elements:** Optional reference elements to use as a starting point.
 
-<div class="callout-block callout-block-note">
+<div class="callout-block callout-block-info">
     <div class="content">
         <h4 class="callout-title"><i class="fa-solid fa-circle-info"></i>Note</h4>
-        <p>Roots takes inspiration from established frameworks like Bootstrap but introduces custom approaches for Unity-specific challenges, such as tooltips and dropdowns.</p>
+        <p>Roots takes inspiration from established frameworks like Bootstrap but introduces custom approaches for Unity-specific challenges or limitations.</p>
     </div>
 </div>
 
@@ -42,7 +42,7 @@ To initialize the Roots ecosystem, add the following to the GameObject containin
 2. **`AssetsLoader`:** An abstract bridge to your asset pipeline.
   - Roots includes a `ResourcesLoader` for quick prototyping, but you should implement a custom version for production pipelines (Addressables, etc.).
 
-If you plan to use animated elements (like `MotionDiv`), you also need a `MotionAutoUpdate` component in your project. You can skip this if you prefer to manually call `DoMotion.Step`.
+If you plan to use animated elements (like `MotionDiv`), you also need a `MotionAutoStep` component in your project. You can skip this if you prefer to manually call `DoMotion.Step`.
 
 ## Responsive Style Sheets
 Roots introduces a system similar to CSS `min-width` media queries, allowing you to stack USS files based on screen width.
@@ -84,10 +84,10 @@ Higher `min-width` sheets should be used to override styles defined in the "base
 
 ## Utilities
 ### Resolved Language Direction
-`VisualElements` have a `languageDirection` property of type `public enum LanguageDirection{ Inherit, LTR, RTL }`. But when the value is `Inherit`, we don't know what the language direction is. Roots adds the `GetResolvedLanguageDirection` extension method which resolves the inherited directionlity.
+All `VisualElements` have a `languageDirection` enum (`Inherit`, `LTR` or `RTL`). When the value is `Inherit`, we don't know what the resolved language direction is. Roots provides the `GetResolvedLanguageDirection` extension method that resolves the actual directionality when set to `Inherit`.
 
 ### Style
-Roots provides chain extension methods to set up inline `style`.
+Roots provides chainable extension methods for inline styling. While USS classes are generally preferred, these come in very handy sometimes:
 
 {% highlight csharp %}
 Div.Create(
@@ -98,10 +98,8 @@ Div.Create(
     children: H3.Create(text: "Hello World"));
 {% endhighlight %}
 
-As always, the rule of favoring USS class names and style sheets over inline styling still apply, but these chain methods sometimes come handy.
-
 ### Vector Swizzling
-We found ourselves needing to swizzle vector components all the time. So we created a bunch of extension methods just for that purpose and pack it as part of Roots.
+Commonly used in UI positioning and layout, Roots includes shorthand swizzling extensions:
 
 {% highlight csharp %}
 var vec0 = new Vector4(1, 2, 3, 4); // (1, 2, 3, 4)
@@ -119,3 +117,11 @@ Roots comes with samples showing a wide range of UI Elements (from simple button
 4. Open the newly imported `Samples` scene and enter Play Mode.
 
 Each sample is contained in a resizable container and has a "View Code" button to easily explore the code.
+
+<div class="callout-block callout-block-info">
+    <div class="content">
+        <h4 class="callout-title"><i class="fa-solid fa-circle-info"></i>Self Documented</h4>
+        <p>We will be working on expanding and improving this guide in the coming months. But we believe the best documentation for Roots to be the Samples project.</p>
+        <p>We encourage you to look and mess around.</p>
+    </div>
+</div>

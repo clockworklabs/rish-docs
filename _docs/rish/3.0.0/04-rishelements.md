@@ -3,7 +3,7 @@ title: RishElements
 slug: rishelements
 sections:
   - Inputs
-  - DOMDescriptor
+  - VisualAttributes
   - Wrap VisualElements
   - Callbacks
   - UIToolkit Events
@@ -80,7 +80,7 @@ public struct FooProps {
 ## Wrapping VisualElements
 A very common pattern is creating a `RishElement` that wraps a `VisualElement` (like a custom Card or Container) but allows the parent to style it.
 
-Instead of passing every style property manually, you can use `DOMDescriptor`. This struct contains `name`, `className`, and `style`.
+Instead of passing every style property manually, you can use `VisualAttributes`. This struct contains `name`, `className`, and `style`.
 
 {% highlight csharp %}
 private partial class Example : RishElement
@@ -109,8 +109,8 @@ private partial class AlertContainer : RishElement<AlertContainerProps>
 
 [RishValueType]
 public struct AlertContainer {
-    [DOMDescriptor]
-    public DOMDescriptor descriptor;
+    [Expand]
+    public VisualAttributes descriptor;
     public Children children;
 }
 {% endhighlight %}
@@ -124,10 +124,10 @@ Implement `IMountingListener` to know when an element enters or leaves the tree.
 {% highlight csharp %}
 private partial class FooElement : RishElement, IMountingListener
 {
-    void IMountingListener.ComponentDidMount() {
+    void IMountingListener.ElementDidMount() {
         Debug.Log("Element mounted");
     }
-    void IMountingListener.ComponentWillUnmount() { 
+    void IMountingListener.ElementWillUnmount() { 
         Debug.Log("Element will be unmounted");
     }
 
@@ -155,7 +155,7 @@ private partial class FooElement : RishElement, IManualState
 <div class="callout-block callout-block-warning">
     <div class="content">
         <h4 class="callout-title">Warning</h4>
-        <p><code>IManualState.Restart</code> will be called right before the element gets reused from the Pool. Do not use <code>Restart</code> to unsubscribe from events or cancel actions. Use <code>ComponentWillUnmount</code> for that.</p>
+        <p><code>IManualState.Restart</code> will be called right before the element gets reused from the Pool. Do not use <code>Restart</code> to unsubscribe from events or cancel actions. Use <code>ElementWillUnmount</code> for that.</p>
     </div>
 </div>
 
@@ -170,10 +170,10 @@ If you implement `ICustomUnmountListener`:
 {% highlight csharp %}
 public partial class DelaySampleElement : RishElement, IMountingListener, ICustomUnmountListener
 {
-    void IMountingListener.ComponentDidMount() {
+    void IMountingListener.ElementDidMount() {
         Debug.Log("1. Element was added to the tree.");
     }
-    void IMountingListener.ComponentWillUnmount() {
+    void IMountingListener.ElementWillUnmount() {
         Debug.Log("4. Element is about to be removed from the tree.");
     }
 
@@ -250,8 +250,8 @@ public partial class FooElement : RishElement<FooProps, FooState>, IPropsListene
 
 [RishValueType]
 public struct FooProps {
-    [DOMDescriptor]
-    public DOMDescriptor descriptor; // descriptor can change and it won't trigger another setup
+    [Expand]
+    public VisualAttributes descriptor; // descriptor can change and it won't trigger another setup
 
     public int id; // if id changes, Setup will be called
 }

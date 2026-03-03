@@ -49,7 +49,7 @@ layout: default
 				{% assign i = 0 %}
 				{% assign pages = site.docs | where_exp: "doc", "doc.categories contains library" | where_exp: "doc", "doc.categories contains version" %}
 			  	{% for doc in pages %}
-					<li class="nav-item section-title{% if doc.slug == page.slug %} active{% endif %} {% if i > 0 %} mt-3{% endif %}"><a class="nav-link" href="{{ target_url }}/{{ doc.slug }}"><span class="theme-icon-holder me-2"><i class="fas fa-{% if doc.icon %}{{ doc.icon }}{% else %}right-long{% endif %}"></i></span>{{ doc.title }}</a></li>
+					<li class="nav-item section-title{% if doc.slug == page.slug %} active{% endif %} {% if i > 0 %} mt-3{% endif %}"><a class="nav-link" href="{{ target_url }}/{{ doc.slug }}"><span class="theme-icon-holder me-2"><i class="fa-{{ doc.icon-style }} fa-{% if doc.icon %}{{ doc.icon }}{% else %}right-long{% endif %}"></i></span>{{ doc.title }}</a></li>
 					{% if doc.slug == page.slug %}
 						{% for doc-section in doc.sections %}
 							<li class="nav-item"><a class="nav-link scrollto" href="#{{ doc-section | slugify }}">{{ doc-section }}</a></li>

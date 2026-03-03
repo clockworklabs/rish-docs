@@ -55,9 +55,11 @@ defaults:
       type: docs
     values:
       layout: docs
+      icon-style: solid
   - scope:
       path: ""
       type: auto_docs
+      icon-style: solid
     values:
       layout: docs
   - scope:
