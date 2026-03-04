@@ -23,7 +23,14 @@ If you are familiar with React or other declarative UI frameworks, you will feel
 **Deterministic:** Implemented properly, your UI becomes a pure function of your game state. Always in sync and (hopefully 🤞) bug-free.
 
 ## Elements Composition
-Rish apps are built using Elements (a piece of the UI that has it's own logic and appearence). (Note: While React calls them "Components," we stick to "Elements" to align with UI Toolkit's naming conventions).
+Rish apps are built using Elements. An Element is a piece of the UI that has it's own logic and appearence.
+
+<div class="callout-block callout-block-info">
+    <div class="content">
+        <h4 class="callout-title"><i class="fa-solid fa-circle-info"></i>Note:</h4>
+        <p>While React calls them "Components," we stick to "Elements" to align with UI Toolkit's naming convention.</p>
+    </div>
+</div>
 
 There are two distinct types of elements in Rish:
 
