@@ -48,10 +48,15 @@ public struct FooProps {
 }
 {% endhighlight %}
 
-_Note: Rishenerator's auto-generated equality checks only look at Fields. Properties are ignored during dirty checking._
+<div class="callout-block callout-block-info">
+    <div class="content">
+        <h4 class="callout-title"><i class="fa-solid fa-circle-info"></i>Important</h4>
+        <p>Rishenerator's auto-generated equality checks only look at Fields. Properties are ignored during dirty checking.</p>
+    </div>
+</div>
 
 ### Equality Checks
-Rish determines if an element needs to re-render by comparing the **New Props** vs. the **Old Props** or the **New State** vs. the **Old State**. If they are not equal, the element is flagged **Dirty** and re-renders.
+Rish determines if an element needs to re-render by comparing the **New Props** vs. the **Old Props** or the **New State** vs. the **Old State**. If they are not equal, the element is flagged dirty and re-renders.
 
 You can control how specific fields are compared using attributes:
 
@@ -97,7 +102,7 @@ When no comparison attribute is provided, the default behavior is:
 #### Comparers
 Rishenerator will produce Comparer methods whenever a fast memory comparison is not possible (for example, if a field should be ignored or should be compared using another Comparer).
 
-In rare cases, you may need manual control over how a specific type is compared and you can define a static `(T, T) -> Bool` Custom Comparer method flagged with [Comparer].
+In rare cases, you may need manual control over how a specific type is compared and you can define a static `(T, T) -> Bool` Custom Comparer method flagged with the `[Comparer]` attribute.
 
 For example, Rish's `Element` is a Pointer Value Type (and it just holds an id) and to compare Element Definitions we should call the `Equals` method of the internal reference type instead:
 
@@ -131,7 +136,7 @@ private static bool Equals(Element a, Element b)
 {% endhighlight %}
 
 ## Reference Types
-While we discourage using reference types in Props/State, you often need to interface with existing game systems.
+While we discourage using reference types in Props/State, you often need to interface with existing game systems and they may seem unavoidable.
 
 **The Solution:** Do not put the mutable object itself in Props. Instead, subscribe to changes and copy the relevant data into your State.
 
@@ -161,5 +166,9 @@ public partial class InventoryPocket : RishElement<InventoryPocketProps, Invento
 }
 {% endhighlight %}
 
-##### Direct Reference Usage (Use with Caution)
-If you must pass a reference type (e.g., a `Texture2D` or a `ScriptableObject` configuration), remember that Rish defaults to **Reference Equality** and if the content of the object changes but the reference stays the same, Rish will not detect the change and will not re-render.
+<div class="callout-block callout-block-danger">
+    <div class="content">
+        <h4 class="callout-title"><i class="fa-solid fa-triangle-exclamation"></i>Use Caution</h4>
+        <p>If you can't avoid to use a reference type (e.g., a `Texture2D` or a `ScriptableObject` configuration) in Props or State, remember that Rish defaults to **Reference Equality** and if the content of the object changes but the reference stays the same, Rish will not detect the change and will not re-render the element.</p>
+    </div>
+</div>

@@ -27,7 +27,7 @@ There are three main base classes for `RishElement`, depending on your data need
 
 <div class="callout-block callout-block-info">
     <div class="content">
-        <h4 class="callout-title">Node</h4>
+        <h4 class="callout-title"><i class="fa-solid fa-circle-info"></i>Node</h4>
         <p>Internally, every RishElement has a Props type. The base <code>RishElement</code> simply inherits from <code>RishElement&lt;NoProps&gt;</code>.</p>
     </div>
 </div>
@@ -86,7 +86,7 @@ Instead of passing every style property manually, you can use `VisualAttributes`
 private partial class Example : RishElement
 {    
     protected override Element Render() => AlertContainer.Create(
-        style: new Style {
+        style: new Style { // Style doesn't exist in Props but the [Expand] attribute generates this
             maxWidth = Length.Percent(70),
             margin = 16
         },
@@ -101,16 +101,16 @@ private partial class Example : RishElement
 private partial class AlertContainer : RishElement<AlertContainerProps>
 {    
     protected override Element Render() => Div.Create(
-        name: Props.descriptor.name,
-        className: Props.descriptor.className + "alert",
-        style: Props.descriptor.style,
+        name: Props.attributes.name,
+        className: Props.attributes.className + "alert",
+        style: Props.attributes.style,
         children: Props.children);
 }
 
 [RishValueType]
 public struct AlertContainer {
     [Expand]
-    public VisualAttributes descriptor;
+    public VisualAttributes attributes;
     public Children children;
 }
 {% endhighlight %}
@@ -152,9 +152,9 @@ private partial class FooElement : RishElement, IManualState
 }
 {% endhighlight %}
 
-<div class="callout-block callout-block-warning">
+<div class="callout-block callout-block-danger">
     <div class="content">
-        <h4 class="callout-title">Warning</h4>
+        <h4 class="callout-title"><i class="fa-solid fa-triangle-exclamation"></i>Be Careful!</h4>
         <p><code>IManualState.Restart</code> will be called right before the element gets reused from the Pool. Do not use <code>Restart</code> to unsubscribe from events or cancel actions. Use <code>ElementWillUnmount</code> for that.</p>
     </div>
 </div>
@@ -238,9 +238,9 @@ public partial class FooElement : RishElement<FooProps, FooState>, IPropsListene
     void IPropsListener<FooProps>.PropsWillChange() { }
 
     protected override Element Render() => P.Create(
-        name: Props.descriptor.name,
-        className: Props.descriptor.className,
-        style: Props.descriptor.style,
+        name: Props.attributes.name,
+        className: Props.attributes.className,
+        style: Props.attributes.style,
         text: $"The item is called {State.name}");
 
     private void Setup() {
@@ -251,7 +251,7 @@ public partial class FooElement : RishElement<FooProps, FooState>, IPropsListene
 [RishValueType]
 public struct FooProps {
     [Expand]
-    public VisualAttributes descriptor; // descriptor can change and it won't trigger another setup
+    public VisualAttributes attributes; // visualAttributes can change and it won't trigger another setup
 
     public int id; // if id changes, Setup will be called
 }
@@ -270,7 +270,7 @@ RishElements can listen to UI Toolkit events (like clicks or hovers) just like V
 
 <div class="callout-block callout-block-info">
     <div class="content">
-        <h4 class="callout-title">Important</h4>
+        <h4 class="callout-title"><i class="fa-solid fa-circle-info"></i>Note</h4>
         <p>Since RishElements don't exist in the Visual Tree, Rish attaches these callbacks to the first VisualElement descendant.</p>
     </div>
 </div>

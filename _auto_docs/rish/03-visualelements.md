@@ -65,9 +65,9 @@ protected override Element Render() => Div.Create(
     });
 {% endhighlight %}
 
-<div class="callout-block callout-block-warning">
+<div class="callout-block callout-block-success">
     <div class="content">
-        <h4 class="callout-title"><i class="fa-solid fa-circle-info"></i>Best Practice</h4>
+        <h4 class="callout-title"><i class="fa-solid fa-circle-check"></i>Best Practice</h4>
         <p>Favor <strong>USS style sheets</strong> (via <code>className</code>) over inline styles. Unity optimizes style sheets better (and supports live reloading of USS assets) and it keeps your style and layout logic separate from your code.</p>
         <p>Use <strong>Inline Styles</strong> only when the style depends on dynamic data from Props or State.</p>
     </div>
@@ -117,10 +117,10 @@ public struct ExampleProps {
 }
 {% endhighlight %}
 
-<div class="callout-block callout-block-info">
+<div class="callout-block callout-block-danger">
     <div class="content">
-        <h4 class="callout-title">Note</h4>
-        <p>The purpose of <code>Setup</code> is strictly to configure the element's own properties (color, text, texture, etc.). You should <strong>not</strong> add or remove children inside <code>Setup</code>.</p>
+        <h4 class="callout-title"><i class="fa-solid fa-triangle-exclamation"></i>Important</h4>
+        <p>The purpose of the <code>Setup</code> method is strictly to configure the element's own properties (color, text, texture, etc.). You should <strong>not</strong> add or remove children inside <code>Setup</code>.</p>
     </div>
 </div>
 
@@ -189,13 +189,13 @@ You can react to styling changes by implementing specific listeners:
 {% highlight csharp %}
 private partial class FooElement : VisualElement, IVisualElement, INameListener, IClassNameListener, IStyleListener
 {
-    void INameListener.DidChange(Name value) {
+    void INameListener.NameSet(Name value) {
         Debug.Log($"The element is now called {value}.");
     }
-    void IClassNameListener.DidChange(ClassName value) {
+    void IClassNameListener.ClassNameSet(ClassName value) {
         Debug.Log($"The element has {value.Count} class names.");
     }
-    void IStyleListener.DidChange(Style value) {
+    void IStyleListener.StyleSet(Style value) {
         Debug.Log($"The element inline style changed.");
     }
 
@@ -209,9 +209,9 @@ When Rish renders a `VisualElement`:
 - **Setup:** It calls `Setup(props)` (only if Props have changed).
 - **Children:** It reconciles and updates all children.
 
-<div class="callout-block callout-block-danger">
+<div class="callout-block callout-block-warning">
     <div class="content">
-        <h4 class="callout-title">Important</h4>
+        <h4 class="callout-title"><i class="fa-solid fa-triangle-exclamation"></i>Asynchronous Visual Updates</h4>
         <p>Layout and style updates happen asynchronously on UI Toolkit's side. If you query <code>resolvedStyle</code> (e.g., <code>element.resolvedStyle.width</code>) immediately after a render, it may not yet reflect the new values.</p>
     </div>
 </div>

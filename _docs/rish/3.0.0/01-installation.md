@@ -15,7 +15,7 @@ Add the following package URL: `https://github.com/clockworklabs/rish#[target-ve
 Rish requires the following dependencies to function correctly:
 - Unity: 2022.3 or higher.
 - Collections: `com.unity.collections` (version `1.2.4+`).
-- [Sappy](https://github.com/clockworklabs/sappy): `io.clockworklabs.sappy` (version `1.0.0+`).
+- [Sappy](https://github.com/clockworklabs/SappyEvents): `io.clockworklabs.sappy` (version `1.0.0+`).
 
 ### Rishenerator (Source Generator)
 Rish comes with a Roslyn Source Generator called **Rishenerator**. While it is technically possible to write all your Rish code manually, **we strongly recommend using Rishenerator**.
@@ -40,8 +40,8 @@ Rish comes with a Roslyn Source Generator called **Rishenerator**. While it is t
   - Ensure the **Select platforms for plugin** list is empty (no platforms selected).
   - Add (if not present already) the `RoslynAnalyzer` label.
 
-<div class="alert alert-warning" role="alert">
-    The rest of this guide assumes Rishenerator is enabled.
+<div class="alert alert-danger" role="alert">
+    <i class="fa-solid fa-triangle-exclamation"></i> The rest of this guide assumes Rishenerator is enabled!
 </div>
 
 ## Setup
@@ -70,7 +70,7 @@ public class App : IApp
 {% endhighlight %}
 
 #### Advanced Example (Stateful Root)
-A common pattern is to have a "Root" element that manages high-level state (like loading screens) and mounts the rest of the application.
+A common pattern is to have a "Root" element that manages high-level state (like loading progress) and mounts the rest of the application.
 
 {% highlight csharp %}
 public partial class App : IApp
@@ -84,14 +84,14 @@ public partial class App : IApp
             if(StaticData.IsLoaded)
             {
                 // If data is already ready, set progress immediately
-                // (Using a helper method or direct state update logic here)
-                OnLoadingProgress(1);
+                SetLoadingProgress(1);
             } else {
-                // Subscribe to loading events
+                // Subscribe to loading progress events
                 StaticData.OnLoadingProgress += SetLoadingProgress;
             }
         }
         void IMountingListener.ElementWillUnmount() {
+            // Unsubscribe from loading progress events
             StaticData.OnLoadingProgress -= SetLoadingProgress;
         }
 

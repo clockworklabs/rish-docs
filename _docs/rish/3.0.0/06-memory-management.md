@@ -21,7 +21,7 @@ Rish automatically pools all reference types it handles.
 
 <div class="callout-block callout-block-danger">
     <div class="content">
-        <h4 class="callout-title">Crucial</h4>
+        <h4 class="callout-title"><i class="fa-solid fa-triangle-exclamation"></i>Crucial</h4>
         <p>You should <strong>never</strong> call a constructor for a UI Element (or any reference type managed by Rish) directly. Always use the static <code>Create</code> methods. This ensures the element is correctly retrieved from the pool and tracked by Rish.</p>
     </div>
 </div>
@@ -74,8 +74,8 @@ Because Rish is reusing memory, it needs to know exactly when a pointer is valid
 
 A `ManagedContext` tracks every resource you borrow from the pool during a specific scope.
 
-##### The `[RequiresManagedContext]` Attribute
-You might wonder why you can create elements freely inside your `Render` method without worrying about this.
+#### The `[RequiresManagedContext]` Attribute
+You might wonder why you can create elements freely inside your `Render` method without worrying about all of this.
 
 This is because the Render method is flagged with the `[RequiresManagedContext]` attribute.
 
@@ -94,7 +94,7 @@ namespace RishUI
 
 Rish automatically opens a Context before calling `Render` and closes it afterward. If no one claimed interest on the Context, it can be freed (and all the references it owns return to the pool). If somebody claimed interest, it will stay around for as long as there is interest.
 
-##### Manual Contexts
+#### Manual Contexts
 If you try to create a Pointer type outside of a valid context (e.g., in a method to update state), you will get a compilation error.
 
 To fix this, you must manually open a context using `ManagedContext.New()`:

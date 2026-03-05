@@ -11,7 +11,7 @@ order: 0
 icon: handshake
 ---
 
-Welcome to **Rish**! Rish is a declarative UI library for Unity that uses **UI Toolkit** as its render layer.
+Welcome to **Rish** (_/riːɪʃ/_, sounds like _REE-ish_)! Rish is a declarative UI library for Unity that uses **UI Toolkit** as its render layer.
 
 If you are familiar with React or other declarative UI frameworks, you will feel right at home. Rish (loosely) follows the React paradigm: you tell the computer what to do, not how to do it.
 
@@ -23,14 +23,26 @@ If you are familiar with React or other declarative UI frameworks, you will feel
 **Deterministic:** Implemented properly, your UI becomes a pure function of your game state. Always in sync and (hopefully 🤞) bug-free.
 
 ## Elements Composition
-Rish apps are built using Elements (a piece of the UI that has it's own logic and appearence). (Note: While React calls them "Components," we stick to "Elements" to align with UI Toolkit's naming conventions).
+Rish apps are built using Elements. An Element is a piece of the UI that has it's own logic and appearence.
+
+<div class="callout-block callout-block-info">
+    <div class="content">
+        <h4 class="callout-title"><i class="fa-solid fa-circle-info"></i>Note</h4>
+        <p>While React calls them "Components," we stick to "Elements" to align with UI Toolkit's naming convention.</p>
+    </div>
+</div>
 
 There are two distinct types of elements in Rish:
 
 ### VisualElements (The Render Layer)
 These are standard UI Toolkit elements that implement the `IVisualElement` interface to be used in Rish. They are the actual objects added to Unity's UI Toolkit Visual Tree.
 
-Best Practice: Avoid creating complex logic here. Use these primarily for rendering.
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title"><i class="fa-solid fa-circle-check"></i>Best Practice</h4>
+        <p>Avoid creating complex logic here. Use these primarily for rendering.</p>
+    </div>
+</div>
 
 ### RishElements (The Logic Layer)
 These are the core building blocks of your application (similar to React Components). They inherit from `RishElement` and they must implement a `Render()` method that returns an `Element`.
@@ -84,6 +96,7 @@ public partial class Card : RishElement<CardProps> {
             P.Create(text: Props.message)
         });
 }
+
 [RishValueType]
 public struct CardProps {
     public RishString title;
@@ -115,6 +128,7 @@ public partial class Counter : RishElement<NoProps, CardState> {
 
     private void AddOne() => SetCounter(State.counter + 1);
 }
+
 [RishValueType]
 public struct CounterState {
     public int counter;
@@ -150,6 +164,7 @@ public partial class ItemCard : RishElement<ItemCardProps> {
         return Card.Create(title: item.Name, message: $"There are {recipesCount} ways of crafting {item.Name}.");
     }
 }
+
 [RishValueType]
 public struct ItemCardProps {
     public int id;
@@ -161,4 +176,4 @@ Rish is a UI library, not a rigid or opinionated framework. We're trying not to 
 
 However, if you want a head start, we have created **Roots**, a collection of ready-to-use elements built with Rish.
 
-[Check out the Roots documentantion](/docs/roots/quick-start)
+[Check out Roots' documentantion.](/docs/roots/quick-start)

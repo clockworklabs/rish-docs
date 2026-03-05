@@ -83,20 +83,26 @@ The `Manipulate` method provides an `IManipulable` wrapper instead of the raw Vi
 
 If you have multiple nested Manipulators (e.g., a Row inside a Col inside a Row), Rish collects all style changes from all manipulators in the chain and applies them in a single pass at the end.
 
-You can access and modify `name` and `style` directly (just like a standard `VisualElement`).
+You can access and modify `name` and `style` directly (just like with a standard `VisualElement`).
 
 {% highlight csharp %}
-descendant.name = "updated-name";
-descendant.style.backgroundColor = Color.red;
+void IVisualManipulator.Manipulate(VisualManipulationPhase phase, IManipulable descendant)
+{
+    descendant.name = "updated-name";
+    descendant.style.backgroundColor = Color.red;
+}
 {% endhighlight %}
 
 Because `ClassName` is a Pointer Value Type, you cannot simply create a copy of the current value. Instead, you must use the provided helper methods within a valid Managed Context.
 
 {% highlight csharp %}
-using(ManagedContext.New())
+void IVisualManipulator.Manipulate(VisualManipulationPhase phase, IManipulable descendant)
 {
-    var className = descendant.CloneClassName();
-    className.Add("my-new-class"); 
-    descendant.SetClassName(className);
+    using(ManagedContext.New())
+    {
+        var className = descendant.CloneClassName();
+        className.Add("my-new-class"); 
+        descendant.SetClassName(className);
+    }
 }
 {% endhighlight %}

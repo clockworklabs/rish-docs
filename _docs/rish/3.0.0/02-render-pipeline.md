@@ -16,7 +16,7 @@ Rish manages the complexity of updating and rendering the UI. It handles the syn
 It is important to understand the distinction between an element _instance_ and an element _definition_.
 - The `Render` method returns an `Element`.
 - `Element` is a Pointer (more on these in the [Memory Management guide](/docs/rish/3.0.0/memory-management)) to an Element Definition.
-- An **Element Definition** is a blueprint for an Element. It holds the type of UI element to create, its property values, its styling information, and its children. It is not the live UI object itself.
+- An **Element Definition** is a blueprint for an Element. It holds the type of UI element to create, its property values, its styling information, and its children. It is not an instance of the specific `RishElement` or `VisualElement` class.
 
 ## Mounting and Unmounting
 The lifecycle of an Element begins when it is "mounted" (added to the tree).
@@ -213,7 +213,7 @@ In this updated example, Rish uses the keys (`1` and `2`) to ensure that the `P`
 
 <div class="callout-block callout-block-success">
     <div class="content">
-        <h4 class="callout-title"><i class="fa-solid fa-circle-info"></i>Best practice</h4>
+        <h4 class="callout-title"><i class="fa-solid fa-circle-check"></i>Best practice</h4>
         <p>Always provide Keys when generating lists of elements in a loop or when swapping elements conditionally.</p>
     </div>
 </div>
@@ -258,4 +258,4 @@ private partial class ManualDirtyExample : RishElement, IManualState
 
 ### The `Dirty(bool immediate)` method:
 - `Dirty(false)` (Default): Schedules the update. It may or may not happen on the current update step.
-- `Dirty(true)`: Forces the update to happen during the current update step. Use this only when strictly necessary, as it can result in elements being rendered more than once in the update step.
+- `Dirty(true)`: Forces the update to happen during the current update step. Use this only when strictly necessary, as it can result in elements being rendered more than once in the same update step.

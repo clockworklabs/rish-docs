@@ -174,7 +174,7 @@ public struct ItemsListState
 ### Use Sappy
 In C#, every time you pass a method group (e.g., `action: OnClick`) as a lambda, a new delegate instance is allocated. This creates garbage. We have tested this in Editor, Mono builds and IL2CPP builds. It's unavoidable.
 
-Rish integrates with [Sappy](https://github.com/clockworklabs/sappy) to solve this. Sappy generates cached delegates for your methods. You should use it. Especially in elements that get rendered or mounted/unmounted very frequently. We encourage you to [learn how Sappy works](https://github.com/clockworklabs/sappy).
+Rish integrates with [Sappy](https://github.com/clockworklabs/SappyEvents) to solve this. Sappy generates cached delegates for your methods. You should use it. Especially in elements that get rendered or mounted/unmounted very frequently. We encourage you to learn how Sappy works.
 
 Rishenerator automatically generates `SappyProps` (for callbacks) and `SappyState` (for setters) accessors for you.
 
@@ -207,7 +207,7 @@ Callbacks (Delegates) should never affect the visual look of an element. Therefo
 
 This can cause bugs if you pass a prop callback directly to a child element.
 
-#### Scenario
+##### Scenario
 {% highlight csharp %}
 public partial class Button : RishElement<ButtonProps>
 {
@@ -272,7 +272,7 @@ We have a `PingPong` app that should ping pong a counter between 0 and 10. `Butt
 12. `Button`'s color and label stay the same (action is ignored in the comparison), so it's not re-rendered. `AbstractButton`'s `action` is still pointing to `IncreaseCounter`.
 13. User presses the button. Counter increases by 1. `counter` is now 11.
 
-#### The Fix
+##### The Fix
 Do not pass the raw callback from Props to the child. Instead, pass down a member method that invokes the delegate.
 
 {% highlight csharp %}
@@ -411,7 +411,28 @@ You should not call any of these lifecycle methods manually and implementing the
     - They'll be used in `Create` methods and method arguments should be `camelCase`.
 
 ### Explicit Arguments
-Arguments in `Create` methods are explicitly named. // EXPAND
+Arguments in `Create` methods are explicitly named. This helps with code readability and also guarantees elements to "survive" if the order of fields in Props change.
+
+{% highlight csharp %}
+public partial class NestedElementsExample : RishElement
+{
+    protected override Element Render() => Col.Create(
+        children: new Children
+        {
+            H3.Create(text: "Title"),
+            Nested.Create()
+        });
+
+    public partial class Nested : RishElement
+    {
+        protected override Element Render() => P.Create(text: "Body");
+    }
+}
+// ❌ Not clear what each argument is and if Props change there's a high chance of silent errors
+Card.Create("Hey there", "How are you doing today?");
+// ✅ Easy to read and future proof
+Card.Create(title: "Hey there", body: "How are you doing today?");
+{% endhighlight %}
 
 ### Nested Elements
 Child elements that will only be created within the scope of a parent element are nested classes.
@@ -438,7 +459,7 @@ public partial class NestedElementsExample : RishElement
 More complex Elements are defined in separate files.
 
 <figure>
-    <figcaption>File 1</figcaption>
+    <figcaption>NestedElementsExample.cs</figcaption>
 {% highlight csharp %}
 public partial class NestedElementsExample : RishElement<NestedElementsExampleProps>
 {
@@ -458,7 +479,7 @@ public struct NestedElementsExampleProps {
 </figure>
 
 <figure>
-    <figcaption>File 2</figcaption>
+    <figcaption>Nested.cs</figcaption>
 {% highlight csharp %}
 public partial class NestedElementsExample
 {
