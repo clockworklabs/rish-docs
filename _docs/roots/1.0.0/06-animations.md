@@ -36,15 +36,9 @@ MotionDiv.Create(
     children: P.Create(text: "Loading..."));
 {% endhighlight %}
 
-If you don't define an initial value for a property, the `MotionDiv` will start with the value defined in `animate` without an intro animation. You can also pass `false` in `initial`.
+You can also pass `false` in `initial` to skip the intro animation for a property and jump directly to the value defined in `animate`.
 
 {% highlight csharp %}
-MotionDiv.Create(
-    animate: new Target
-    {
-        width = Length.Percent(t * 100) // Won't have an intro animation when mounted.
-    });
-
 MotionDiv.Create(
     initial: new Initial
     {
@@ -75,8 +69,8 @@ MotionDiv.Create(
             width = Spring.Bouncy,
             height = new Spring {
                 stiffness = 400,
-                mass = 3.5f,
                 damping = 35,
+                mass = 3.5f,
             }
         }
     },
@@ -93,18 +87,18 @@ MotionDiv.Create(
 
 <div class="callout-block callout-block-danger">
     <div class="content">
-        <h4 class="callout-title"><i class="fa-solid fa-circle-info"></i>Exit Animations</h4>
+        <h4 class="callout-title"><i class="fa-solid fa-triangle-exclamation"></i>Exit Animations</h4>
         <p>At the moment, if an element has many siblings, the position of the element being unmounted might be wrong during the outro animation.</p>
         <p>We'll fix this in a future version.</p>
     </div>
 </div>
 
 ### Props
-- `Initial initial`: Initial values for intro animations played when element is first mounted.
+- `Initial initial`: Initial values for intro animations played when the element is mounted.
 - `Target animate`: Target values.
-- `Target exit`: Exit values for outro animations played when element is unmounted.
-- `Action onAnimateComplete`: Callback that gets called when the animate animation is completed.
-- `Action onExitComplete`: Callback that gets called when the exit animation is completed.
+- `Target exit`: Exit values for outro animations played when the element is unmounted.
+- `Action onAnimateComplete`: Callback that gets called when the `animate` animation is completed.
+- `Action onExitComplete`: Callback that gets called when the `exit` animation is completed.
 - `VisualAttributes visualAttributes`: Styling information. Expanded in `Create` method.
 - `Children children`: Children.
 
@@ -114,11 +108,11 @@ A `FadeDiv` wraps around a `MotionDiv` and it simplifies fade in and fade out lo
 ### Props
 - `bool visible`: Whether the element is visible or not.
 - `bool fadeOnUnmount`: If true, the fade out animation is played before unmounting.
-- `bool keepChildrenWhenInvisible`: If true, all children persist mounted when the element is invisible.
+- `bool keepChildrenWhenInvisible`: If true, all children persist mounted while the element is invisible.
 - `FadeDiv.Preset preset`: An animation preset (`Slow`, `Fast` or `Immediate`) to be used if duration is not provided.
 - `float? duration`: Fade animation duration.
 - `float? minOpacity`: Target opacity when `visible` is `false`. Assumed 0 if no value is provided.
 - `float? maxOpacity`: Target opacity when `visible` is `true`. Assumed 1 if no value is provided.
-- `Action onAnimateComplete`: Callback that gets called when the animate animation is completed.
+- `Action onAnimateComplete`: Callback that gets called when the `animate` animation is completed.
 - `VisualAttributes visualAttributes`: Styling information. Expanded in `Create` method.
 - `Children children`: Children.

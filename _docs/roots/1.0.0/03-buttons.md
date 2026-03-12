@@ -8,8 +8,8 @@ icon: hand-pointer
 
 The `AbstractButton` element is a foundational button RishElement. It supports up to 4 visual styles: normal, hovered, pressed and disabled. It can easily be set up as a submit button within a Form. It can receive keyboard focus.
 
-<div class="alert alert-success" role="alert">
-    Rootstrap provides a <code>SimpleButton</code> wrapper.
+<div class="alert alert-info" role="alert">
+    <i class="fa-solid fa-circle-info"></i>Rootstrap provides a <code>SimpleButton</code> wrapper.
 </div>
 
 ## Props

@@ -11,7 +11,7 @@ icon: hand-back-fist
 Because UI Toolkit lacks a `z-index` property and the visual order is determined by the order in the hierarchy, we have to get creative when we want elements to be rendered on top of everything. Drag & Drop is one such situation.
 
 ## Context
-A `DragAndDropContext` ancestor is necessary for `Draggables`s to work. When an element is being dragged, it will add it at the end of its hierarchy (on top of everything else) and will handle its positioning.
+A `DragAndDropContext` ancestor is necessary for `Draggables` to work. When an element is being dragged, it will add it at the end of its hierarchy (on top of everything else) and will handle its positioning.
 
 ### Props
 - `Action<bool> onDrag`: Callback that gets called when dragging begins or ends.
@@ -38,9 +38,9 @@ The `Draggable` element is kind of special: it's a generic RishElement. The type
 - `Action dropNowhereAction`: Callback that gets called when the element is dropped over empty space.
 
 ## `DropArea`
-`Draggable` elements must be dropped over compatible `DragArea`s. The `DragArea` element is also generic and their type argument must match for them to be compatible with each other.
+`Draggable` elements must be dropped over compatible `DragAreas`. The `DragArea` element is also generic and their type argument must match for them to be compatible with each other.
 
-Not only `Draggable`s and `DropArea`s must be compatible, but the `DropArea` also has to validate if the information being dragged is accepted or not. You can imagine a scenario where an item is being dragged but it can only be dropped in certain inventories or slots; some `DropArea`s will accept the item and some will reject it, even though the types match. 
+Not only `Draggables` and `DropAreas` must be compatible, but the `DropArea` also has to validate if the information being dragged is accepted or not. You can imagine a scenario where an item is being dragged but it can only be dropped in certain inventories or slots; some `DropAreas` will accept the item and some will reject it, even though the types match. 
 
 ### Props
 - `Element content`: The `Element` that is used by default.

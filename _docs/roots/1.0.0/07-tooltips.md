@@ -30,12 +30,12 @@ TooltipsContext.Create(
 ### Props
 - `bool forceFit`: If true, tooltips are forced to fit within the `TooltipContext` content rect.
 - `bool hideTooltips`: If true, no tooltip will show.
-- `Action<bool> onShow`: Callback that gets called when a tootlips is shown or hidden.
+- `Action<bool> onShow`: Callback that gets called when a tootlip is shown or hidden.
 - `VisualAttributes visualAttributes`: Styling information. Expanded in `Create` method.
 - `Children children`: Children.
 
 ## `Tooltip`
-The `Tooltip` element is a foundational RishElement. In the `Render` method, it transparently passes the `content` from Props (`protected override Element Render() => Props.content;`) but it listens to pointer hover events and communicates with a `TooltipContext` ancestor to show the `tooltip` in the right place.
+The `Tooltip` element is a foundational RishElement. In the `Render` method, it transparently passes the `content` from Props (`protected override Element Render() => Props.content;`) but it listens to pointer hover events and communicates with a `TooltipContext` ancestor to show the `tooltip` in the right place at the right time.
 
 {% highlight csharp %}
 TooltipsContext.Create(
@@ -51,13 +51,13 @@ TooltipsContext.Create(
     });
 {% endhighlight %}
 
-<div class="alert alert-success" role="alert">
-    Rootstrap provides a <code>SimpleTooltip</code> wrapper.
+<div class="alert alert-info" role="alert">
+    <i class="fa-solid fa-circle-info"></i>Rootstrap provides a <code>SimpleTooltip</code> wrapper.
 </div>
 
 ### Props
 - `Element content`: The child content.
-- `Element tooltip`: The tooltip element to show when hovering the content.
+- `Element tooltip`: The tooltip element to show when `content` is hovered.
 - `bool ignoreFit`: This can override if the context has `forceFit` set to `true`.
 - `float enterDelay`: Delay to wait before showing the tooltip.
 - `float exitDelay`: Delay to wait before hiding the tooltip.

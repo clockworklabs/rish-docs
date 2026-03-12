@@ -13,8 +13,8 @@ Because all children are absolutely positioned, this element can't grow with its
 
 // Image of container, elements and buffers
 
-<div class="alert alert-success" role="alert">
-    Rootstrap provides a <code>SimpleScrollView</code> wrapper.
+<div class="alert alert-info" role="alert">
+    <i class="fa-solid fa-circle-info"></i>Rootstrap provides a <code>SimpleScrollView</code> wrapper.
 </div>
 
 ## Props

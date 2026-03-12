@@ -318,7 +318,7 @@
 		padding-bottom: 0.5rem;
 	}
 }
-	
+
 
 .docs-code-block {
 	padding-top: 1rem;
@@ -427,6 +427,55 @@
 .alert {
 	font-size: 0.85rem;
     font-style: italic;
+
+	&.alert-info {
+		a {
+			color: darken($theme-info-color, 15%);
+		}
+		strong {
+			color: darken($theme-info-color, 10%);
+		}
+		code {
+			background-color: rgba(darken($theme-info-color, 25%), 0.3);
+			color: darken($theme-info-color, 25%);
+		}
+	}
+	&.alert-success {
+		a {
+			color: darken($theme-success-color, 20%);
+		}
+		strong {
+			color: darken($theme-success-color, 15%);
+		}
+		code {
+			background-color: rgba(darken($theme-success-color, 25%), 0.3);
+			color: darken($theme-success-color, 30%);
+		}
+	}
+	&.alert-warning {
+		a {
+			color: darken($theme-warning-color, 15%);
+		}
+		strong {
+			color: darken($theme-warning-color, 10%);
+		}
+		code {
+			background-color: rgba(darken($theme-warning-color, 25%), 0.3);
+			color: darken($theme-warning-color, 25%);
+		}
+	}
+	&.alert-danger {
+		a {
+			color: darken($theme-danger-color, 15%);
+		}
+		strong {
+			color: darken($theme-danger-color, 10%);
+		}
+		code {
+			background-color: rgba(darken($theme-danger-color, 25%), 0.3);
+			color: darken($theme-danger-color, 25%);
+		}
+	}
 }
 
 .version-picker {

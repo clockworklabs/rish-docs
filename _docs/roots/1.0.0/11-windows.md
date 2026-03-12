@@ -24,11 +24,14 @@ A `WindowsContext` ancestor is necessary for `Window`s to work. It handles windo
 The `Window` element actually returns nothing in its `Render` method: `protected override Element Render() => Element.Null;`. Instead it communicates with a `WindowsContext` ancestor and the context will add `content` as one of its children.
 
 <div class="alert alert-info" role="alert">
-    In a future release, we will add support to resize windows.
+    <i class="fa-solid fa-circle-info"></i>Rootstrap provides a <code>SimpleWindow</code> wrapper.
 </div>
 
-<div class="alert alert-success" role="alert">
-    Rootstrap provides a <code>SimpleWindow</code> wrapper.
+<div class="callout-block callout-block-info">
+    <div class="content">
+        <h4 class="callout-title"><i class="fa-solid fa-triangle-exclamation"></i>Coming Soon</h4>
+        <p>In a future release, we will add support to resize windows.</p>
+    </div>
 </div>
 
 ### Props
@@ -43,11 +46,11 @@ The `Window` element actually returns nothing in its `Render` method: `protected
 ## Dragging
 A `Window` comunicates and passes _upwards_ a `content` to a `WindowsContext`. It's not listening to input events, it's not rendering anything, it's just a logical "ghost" element. 
 
-To allow `Window`s to be dragged, you need to set `draggable` to `true` and `content` must have a `WindowHeader` child. The `WindowHeader` will listen to input events and communicate with the `WindowsContext`.
+To allow `Windows` to be dragged, you need to set `draggable` to `true` and `content` must have a `WindowHeader` child. The `WindowHeader` will listen to input events and communicate with the `WindowsContext`.
 
 <div class="callout-block callout-block-info">
     <div class="content">
         <h4 class="callout-title"><i class="fa-solid fa-circle-info"></i>Custom Logic</h4>
-        <p>In advanced scenarios where you need custom behavior, you can set `offset` in a `Window` and implement your own dragging or positioning system.</p>
+        <p>In advanced scenarios where you need custom behavior, you can set the `offset` property in a `Window` and implement your own dragging or positioning system.</p>
     </div>
 </div>

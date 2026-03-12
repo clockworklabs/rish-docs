@@ -10,7 +10,7 @@ icon: square-caret-down
 Because UI Toolkit lacks a `z-index` property and the visual order is determined by the order in the hierarchy, we have to get creative when we want elements to be rendered on top of everything. Dropdowns are one such situation.
 
 ## Context
-A `DropdownContext` ancestor is necessary for `Dropdown`s to work. When a dropdown menu is needed, it will add it at the end of its hierarchy (on top of everything else) and will handle its positioning.
+A `DropdownContext` ancestor is necessary for `Dropdowns` to work. When a dropdown menu is needed, it will add it at the end of its hierarchy (on top of everything else) and will handle its positioning.
 
 It will only show one dropdown at a time.
 
@@ -23,8 +23,22 @@ It will only show one dropdown at a time.
 ## `DropdownButton`
 The `DropdownButton` element wraps around `AbstractButton` and it adds a new `open` style. It listens to pointer click events and communicates with a `DropdownContext` ancestor to show the `menu` in the right place.
 
-<div class="alert alert-success" role="alert">
-    Rootstrap provides a <code>SimpleDropdown</code> wrapper.
+{% highlight csharp %}
+DropdownContext.Create(
+    name: "dropdown",
+    children: new Children {
+        // Some Children
+            // ...
+                // ...
+                    Dropdown.Create(
+                        // ...
+                    )
+        // More Children
+    });
+{% endhighlight %}
+
+<div class="alert alert-info" role="alert">
+    <i class="fa-solid fa-circle-info"></i>Rootstrap provides a <code>SimpleDropdown</code> wrapper.
 </div>
 
 ### Props
