@@ -10,7 +10,7 @@ icon: bars
 Because UI Toolkit lacks a `z-index` property and the visual order is determined by the order in the hierarchy, we have to get creative when we want elements to be rendered on top of everything. Context Menus are one such situation.
 
 ## Context
-A `ContextualContext` ancestor is necessary for `Contextual`s to work. When a context menu is needed, it will add it at the end of its hierarchy (on top of everything else) and will handle its positioning.
+A `ContextualContext` ancestor is necessary for `Contextuals` to work. When a context menu is needed, it will add it at the end of its hierarchy (on top of everything else) and will handle its positioning.
 
 It will only show one context menu at a time.
 
@@ -22,8 +22,22 @@ It will only show one context menu at a time.
 ## `Contextual`
 The `Contextual` element responds to pointer events and communicates with a `ContextualContext` ancestor to show the `menu` in the right place.
 
-<div class="alert alert-success" role="alert">
-    Rootstrap provides a <code>SimpleContextual</code> wrapper.
+{% highlight csharp %}
+ContextualContext.Create(
+    name: "dropdown",
+    children: new Children {
+        // Some Children
+            // ...
+                // ...
+                    Contextual.Create(
+                        // ...
+                    )
+        // More Children
+    });
+{% endhighlight %}
+
+<div class="alert alert-info" role="alert">
+    <i class="fa-solid fa-circle-info"></i>Rootstrap provides a <code>SimpleContextual</code> wrapper.
 </div>
 
 ### Props

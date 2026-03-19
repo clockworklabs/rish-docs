@@ -7,14 +7,14 @@ icon: scroll
 
 The `ScrollView` is a linear layout element. Like a `Stack`, it arranges elements in a single direction and can add a gap in between them. Unlike a `Stack`, it only mounts the elements that are visible within the container (plus a buffer).
 
+![Image](/assets/images/roots/1.0.0/scroll-view.svg)
+
 It's useful to performantly layout a long list of elements that does not fit all at once inside the container.
 
 Because all children are absolutely positioned, this element can't grow with its content (like `Stacks` do) and will need layouting data (like `width` or `height`).
 
-// Image of container, elements and buffers
-
-<div class="alert alert-success" role="alert">
-    Rootstrap provides a <code>SimpleScrollView</code> wrapper.
+<div class="alert alert-info" role="alert">
+    <i class="fa-solid fa-circle-info"></i>Rootstrap provides a <code>SimpleScrollView</code> wrapper.
 </div>
 
 ## Props

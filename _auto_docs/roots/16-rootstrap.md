@@ -4,8 +4,7 @@ slug: rootstrap
 sections:
     - Elements
     - Utilities
-icon: bootstrap
-icon-style: brands
+icon: circle-play
 ---
 
 You can import Rootstrap from the Samples tab in the Package Manager.
@@ -40,7 +39,7 @@ Rootstrap comes with a lot of class names that basically mimics Bootstrap's util
 - [Background](https://getbootstrap.com/docs/5.3/utilities/background/).
 - [Borders](https://getbootstrap.com/docs/5.3/utilities/borders/) (except some USS limitations).
 - [Colors](https://getbootstrap.com/docs/5.3/utilities/colors/).
-- [Display](https://getbootstrap.com/docs/5.3/utilities/display/) (although just `flex` or `none` due to USS limitations).
+- [Display](https://getbootstrap.com/docs/5.3/utilities/display/) (only `flex` or `none` due to USS limitations).
 - [Opacity](https://getbootstrap.com/docs/5.3/utilities/opacity).
 - [Position](https://getbootstrap.com/docs/5.3/utilities/position) (only `absolute` or `relative` due to USS limitations).
 - [Sizing](https://getbootstrap.com/docs/5.3/utilities/sizing/).

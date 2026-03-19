@@ -77,7 +77,7 @@ Higher `min-width` sheets should be used to override styles defined in the "base
 
 <div class="callout-block callout-block-danger">
     <div class="content">
-        <h4 class="callout-title"><i class="fa-solid fa-circle-info"></i>Style Overrides</h4>
+        <h4 class="callout-title"><i class="fa-solid fa-triangle-exclamation"></i>Style Overrides</h4>
         <p>Roots appends these style sheets on top of those handled by <code>RishRoot</code>. Ensure your selectors account for this override order.</p>
     </div>
 </div>

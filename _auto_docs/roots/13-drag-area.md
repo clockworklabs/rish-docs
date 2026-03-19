@@ -17,7 +17,7 @@ The `content` is added to a Holder element that can be independently styled from
 - `DragArea.AxisOfFreedom axisOfFreedom`: `None`, `Vertical`, `Horizontal` or `VerticalAndHorizontal`.
 - `Translate initialOffset`: Initial offset of `content` within the `DragArea`.
 - `Element content`: The visual content of the `DragArea`.
-- `Length? extraMargin`: TODO
+- `Length? extraMargin`: Extra margin allowed for `Default` or `Stretchy` behavior. Default to 5%.
 - `float? mouseWheelMultiplier`: Multiplier to adjust mouse wheel sensitivity. If not set, 30 is used by default.
 - `Vector2? offset`: The offset of `content` within the `DragArea`. If not set, `content` position is fully controlled by `DragArea`.
-- `Action<Vector2> onOffset`: Callback that gets called when `content` is dragged around. 
+- `Action<Vector2> onOffset`: Callback that gets called when `content` is dragged around.

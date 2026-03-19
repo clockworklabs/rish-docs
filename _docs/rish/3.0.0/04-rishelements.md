@@ -59,9 +59,44 @@ public struct FooState { }
 {% endhighlight %}
 
 ### Default Values
-To define default values, implement a static property of the same type with the `[Default]` attribute inside your struct.
+Both Props and State can have default values.
 - **Props Defaults:** Used if the parent does not provide a value.
 - **State Defaults:** Used to initialize the state when the element is first mounted.
+
+To define default values, there are two options:
+
+#### Individual Default Values
+Add the `[DefaultValue]` attribute to specific fields that need a default value.
+
+{% highlight csharp %}
+[RishValueType]
+public struct FooProps {
+    [DefaultValue(true)]
+    public bool isVisible;
+    public int count;
+}
+{% endhighlight %}
+
+The `[DefaultValue]` attribute can only accept compile-time constant expressions. For instances where this is not enough, you can use the `[DefaultCode]` attribute and Rishenerator will copy and paste the string provided.
+
+{% highlight csharp %}
+[RishValueType]
+public struct FooProps {
+    public bool isVisible;
+    [DefaultCode("UnityEngine.Random.Range(0, 10)")]
+    public int count;
+}
+{% endhighlight %}
+
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title"><i class="fa-solid fa-circle-check"></i>Best Practice</h4>
+        <p>For Props specifically, it's always advisable to use these individual default values (above) over the <code>[Default]</code> property explained below. It results in both better programmer experience and better performance.</p>
+    </div>
+</div>
+
+#### Default Property
+Implement a static property of the same type with the `[Default]` attribute inside your struct.
 
 {% highlight csharp %}
 [RishValueType]

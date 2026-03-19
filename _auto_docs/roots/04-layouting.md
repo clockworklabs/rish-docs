@@ -287,5 +287,3 @@ Children in a column will be separated by the `Grid`'s vertical gutter.
 - `int? xxl`: Column size (in Grid Units) in Extra Extra Large `ResponsiveContexts`. If not set, it inherits `xl` value.
 - `VisualAttributes visualAttributes`: Styling information.
 - `Children children`: Children.
-
-#### Examples
