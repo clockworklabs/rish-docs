@@ -15,7 +15,7 @@ Add the following package URL: `https://github.com/clockworklabs/rish#[target-ve
 Rish requires the following dependencies to function correctly:
 - Unity: 2022.3 or higher.
 - Collections: `com.unity.collections` (version `1.2.4+`).
-- [Sappy](https://github.com/clockworklabs/SappyEvents): `io.clockworklabs.sappy` (version `1.0.0+`).
+- [Sappy](https://github.com/clockworklabs/SappyEvents): `io.clockworklabs.sappy` (version `1.0.0+`). Make sure you import Sappy's source generator using the Package Manager.
 
 ### Rishenerator (Source Generator)
 Rish comes with a Roslyn Source Generator called **Rishenerator**. While it is technically possible to write all your Rish code manually, **we strongly recommend using Rishenerator**.
