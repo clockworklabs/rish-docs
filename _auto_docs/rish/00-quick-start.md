@@ -11,7 +11,7 @@ order: 0
 icon: handshake
 ---
 
-Welcome to **Rish** (_/riːɪʃ/_, sounds like _REE-ish_)! Rish is a declarative UI library for Unity that uses **UI Toolkit** as its render layer.
+Welcome to **Rish** (_/riːʃ/_, sounds like _REEsh_)! Rish is a declarative UI library for Unity that uses **UI Toolkit** as its render layer.
 
 If you are familiar with React or other declarative UI frameworks, you will feel right at home. Rish (loosely) follows the React paradigm: you tell the computer what to do, not how to do it.
 
