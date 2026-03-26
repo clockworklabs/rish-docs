@@ -50,7 +50,7 @@ You can run multiple Rish apps simultaneously (e.g., one for Screen Space UI and
 To set up a Rish App in your scene:
 1. Create an empty **GameObject** (e.g., named "UI_Root").
 2. Add the `RishRoot` component to it. This will automatically add a `UIDocument` component if one is missing.
-3. Assign your **Panel Settings** to the `UIDocument`.
+3. Assign your [**Panel Settings**](https://docs.unity3d.com/6000.3/Documentation/Manual/UIE-create-panel.html) to the `UIDocument`.
 4. Create a class that implements `IApp` and assign it to the `RishRoot`.
 5. Assign all the USS style sheets your app will need to the `RishRoot`. 
 
