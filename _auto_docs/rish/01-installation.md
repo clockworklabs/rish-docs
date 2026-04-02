@@ -15,7 +15,6 @@ Add the following package URL: `https://github.com/clockworklabs/Rish.git#[targe
 Rish requires the following dependencies to function correctly:
 - Unity: 2022.3 or higher.
 - Collections: `com.unity.collections` (version `1.2.4+`).
-    - Install the package.
 - [Sappy](https://github.com/clockworklabs/SappyEvents): `io.clockworklabs.sappy` (version `1.0.0+`).
     - Install the package (`https://github.com/clockworklabs/SappyEvents.git#[target-version]`).
     - Import Sappy's source generator using the Package Manager.

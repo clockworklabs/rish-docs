@@ -36,7 +36,7 @@ Roots requires the following dependencies to function correctly:
 - [Rish](/docs/rish/quick-start): `io.clockworklabs.rish` (version `3.0.0+`).
     - Install the package (`https://github.com/clockworklabs/Rish.git#[target-version]`).
     - Import Rishenerator using the Package Manager.
-- [Motion](https://github.com/clockworklabs/motion): `io.clockworklabs.motion` (version `1.7.9+`).
+- [Motion](https://github.com/clockworklabs/motion): `io.clockworklabs.motion` (version `1.8.0+`).
     - Install the package (`https://github.com/clockworklabs/Motion.git#[target-version]`).
 
 ## Setup
