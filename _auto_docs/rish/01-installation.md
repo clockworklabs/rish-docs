@@ -9,13 +9,16 @@ icon: download
 
 Installing Rish is simple. You can add the package via the Unity Package Manager using the Git URL, or by modifying your `manifest.json` file directly.
 
-Add the following package URL: `https://github.com/clockworklabs/rish#[target-version]`.
+Add the following package URL: `https://github.com/clockworklabs/Rish.git#[target-version]`.
 
 #### Dependencies
 Rish requires the following dependencies to function correctly:
 - Unity: 2022.3 or higher.
 - Collections: `com.unity.collections` (version `1.2.4+`).
+    - Install the package.
 - [Sappy](https://github.com/clockworklabs/SappyEvents): `io.clockworklabs.sappy` (version `1.0.0+`).
+    - Install the package (`https://github.com/clockworklabs/SappyEvents.git#[target-version]`).
+    - Import Sappy's source generator using the Package Manager.
 
 ### Rishenerator (Source Generator)
 Rish comes with a Roslyn Source Generator called **Rishenerator**. While it is technically possible to write all your Rish code manually, **we strongly recommend using Rishenerator**.

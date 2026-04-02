@@ -29,12 +29,15 @@ Roots is a UI toolkit built on top of [Rish](/docs/rish/quick-start). Rish is ve
 ## Installation
 Installing Roots is simple. You can add the package via the Unity Package Manager using the Git URL, or by modifying your `manifest.json` file directly.
 
-Add the following package URL: `https://github.com/clockworklabs/roots#[target-version]`.
+Add the following package URL: `https://github.com/clockworklabs/Roots.git#[target-version]`.
 
 ### Dependencies
 Roots requires the following dependencies to function correctly:
 - [Rish](/docs/rish/quick-start): `io.clockworklabs.rish` (version `3.0.0+`).
+    - Install the package (`https://github.com/clockworklabs/Rish.git#[target-version]`).
+    - Import Rishenerator using the Package Manager.
 - [Motion](https://github.com/clockworklabs/motion): `io.clockworklabs.motion` (version `1.7.9+`).
+    - Install the package (`https://github.com/clockworklabs/Motion.git#[target-version]`).
 
 ## Setup
 To initialize the Roots ecosystem, add the following to the GameObject containing your `RishRoot`:
